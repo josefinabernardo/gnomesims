@@ -11,6 +11,7 @@
 #' @examples
 #' powchi(df = 1, ncp = 10)
 #' powchi(alpha = .01, df = 1, ncp = 5)
+
 powchi = function(alpha = .05, df, ncp) {
   crit = qchisq(alpha, df, lower.tail = F)
   if (abs(ncp) < .0001) { ncp = 0 }
