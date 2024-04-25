@@ -1,4 +1,4 @@
-#' Function to calculate variance increase due to AC covarianceuse
+#' Function to calculate variance increase due to AC covariance
 #'
 #' @param a Additive genetic variance
 #' @param c Shared environment variance
