@@ -9,12 +9,12 @@
 #' @export
 #'
 #' @examples
-#' powchi(df = 1, ncp = 10)
-#' powchi(alpha = .01, df = 1, ncp = 5)
+#' gnome_power(df = 1, ncp = 10)
+#' gnome_power(alpha = .01, df = 1, ncp = 5)
 
-powchi = function(alpha = .05, df, ncp) {
-  crit = qchisq(alpha, df, lower.tail = F)
+gnome_power <- function(alpha = .05, df, ncp) {
+  critical_chi2 <- qchisq(alpha, df, lower.tail = F)
   if (abs(ncp) < .0001) { ncp = 0 }
-  power = pchisq(crit, df, ncp, lower.tail = F)
+  power <- pchisq(critical_chi2, df, ncp, lower.tail = F)
   power
 }
