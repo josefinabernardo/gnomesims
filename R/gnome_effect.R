@@ -10,9 +10,9 @@
 #' @export
 #'
 #' @examples
-#' gnome_effect(a = .4, c = .3, e = .3, g = 0, b = .05)
-#' gnome_effect(a = .4, c = .3, e = .3, g = .05 , b = 0)
-#' gnome_effect(a = .4, c = .3, e = .3, g = .05, b = .05)
+#' gnome_effect(a = sqrt(.4), c = sqrt(.3), e = sqrt(.3), g = 0, b = sqrt(.05))
+#' gnome_effect(a = sqrt(.4), c = sqrt(.3), e = sqrt(.3), g = sqrt(.05), b = 0)
+#' gnome_effect(a = sqrt(.4), c = sqrt(.3), e = sqrt(.3), g = sqrt(.05), b = sqrt(.05))
 
 gnome_effect <- function(a, c, e, g, b) {
 
