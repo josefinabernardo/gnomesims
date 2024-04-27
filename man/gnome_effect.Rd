@@ -2,7 +2,7 @@
 % Please edit documentation in R/gnome_effect.R
 \name{gnome_effect}
 \alias{gnome_effect}
-\title{Function to calculate variance increase due to AC covarianceuse}
+\title{Function to calculate variance increase due to AC covariance}
 \usage{
 gnome_effect(a, c, e, g, b)
 }
@@ -21,10 +21,10 @@ gnome_effect(a, c, e, g, b)
 Proportion of variance increase
 }
 \description{
-Function to calculate variance increase due to AC covarianceuse
+Function to calculate variance increase due to AC covariance
 }
 \examples{
-gnome_effect(a = .4, c = .3, e = .3, g = 0, b = .05)
-gnome_effect(a = .4, c = .3, e = .3, g = .05 , b = 0)
-gnome_effect(a = .4, c = .3, e = .3, g = .05, b = .05)
+gnome_effect(a = sqrt(.4), c = sqrt(.3), e = sqrt(.3), g = 0, b = sqrt(.05))
+gnome_effect(a = sqrt(.4), c = sqrt(.3), e = sqrt(.3), g = sqrt(.05), b = 0)
+gnome_effect(a = sqrt(.4), c = sqrt(.3), e = sqrt(.3), g = sqrt(.05), b = sqrt(.05))
 }

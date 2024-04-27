@@ -1,4 +1,4 @@
-#' Function to calculate power from the non-centrality parameter (NCP)
+#' Function to calculate power from the non-centrality parameter
 #'
 #' @importFrom stats pchisq qchisq
 #' @param alpha Type II error
