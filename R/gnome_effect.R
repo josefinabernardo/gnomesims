@@ -13,6 +13,7 @@
 #' gnome_effect(a = sqrt(.4), c = sqrt(.3), e = sqrt(.3), g = 0, b = sqrt(.05))
 #' gnome_effect(a = sqrt(.4), c = sqrt(.3), e = sqrt(.3), g = sqrt(.05), b = 0)
 #' gnome_effect(a = sqrt(.4), c = sqrt(.3), e = sqrt(.3), g = sqrt(.05), b = sqrt(.05))
+
 gnome_effect <- function(a, c, e, g, b) {
 
   # Phenotypic covariances for MZ and DZ

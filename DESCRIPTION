@@ -4,8 +4,11 @@ Version: 0.0.0.9000
 Authors@R: 
     person("Josefina", "Bernardo", , "j.b.bernardo@vu.nl", role = c("aut", "cre"),
            comment = c(ORCID = "0009-0007-1894-9790"))
-Description: The package simulates genotyped family data of parents and offspring pairs. Simulated data may include gene-environment covariance. It then calculates the power of finding cultural transmission and sibling interaction in the data using different models.
+Description: The package simulates genotyped family data of parents and offspring pairs. Simulated data may include gene-environment covariance. The package also calculates the power of finding cultural transmission and sibling interaction in the data using different models.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
