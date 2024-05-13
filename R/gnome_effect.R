@@ -25,8 +25,8 @@ gnome_effect <- function(a, c, e, g, b) {
 
 
   # Variance Increase
-  effect_mz <- smz - 1
-  effect_dz <- sdz - 1
+  effect_mz <- smz
+  effect_dz <- sdz
 
   effect = list(mz = effect_mz, dz = effect_dz)
   return(effect)
