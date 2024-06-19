@@ -1,4 +1,13 @@
-url: ~
+url: josefinabernardo.github.io/pkgdowntravis
+
 template:
-  bootstrap: 5
+  params:
+    bootswatch: cosmo
+
+authors:
+  Josefina Bernardo:
+        https://www.linkedin.com/in/josefina-bernardo/
+
+development:
+  mode: release
 
