@@ -24,7 +24,7 @@ For detailed documentation please refer to the vignette: [How to use gnomesims](
 </td>
 <td>
 
-<img src="man/figures/logo.png" style="height:200px; width:200px;" alt="Gnomesims Logo" />
+<img src="man/figures/logo.png" style="height:200px;" alt="Gnomesims Logo" />
 
 </td>
 </tr>
