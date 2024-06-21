@@ -19,7 +19,7 @@ devtools::install_github("josefinabernardo/gnomesims")
 
 ## Detailed documentation
 
-For detailed documentation please refer to the vignette: [How to use gnomesims]([docs/articles/gnomesims.html](https://josefinabernardo.github.io/gnomesims/articles/gnomesims.html)).
+For detailed documentation please refer to the vignette: [How to use gnomesims](https://josefinabernardo.github.io/gnomesims/articles/gnomesims.html).
 
 </td>
 <td>
