@@ -10,13 +10,25 @@
     <loc>/LICENSE.html</loc>
   </url>
   <url>
+    <loc>/articles/gnomesims.html</loc>
+  </url>
+  <url>
+    <loc>/articles/index.html</loc>
+  </url>
+  <url>
     <loc>/authors.html</loc>
   </url>
   <url>
     <loc>/index.html</loc>
   </url>
   <url>
+    <loc>/reference/default_a.html</loc>
+  </url>
+  <url>
     <loc>/reference/gnome_effect.html</loc>
+  </url>
+  <url>
+    <loc>/reference/gnome_mx_simulation.html</loc>
   </url>
   <url>
     <loc>/reference/gnome_power.html</loc>
