@@ -1,8 +1,9 @@
-## gnomesims
+# gnomesims
 
 <table>
 <tr>
 <td>
+  
 ## Overview
 
 `gnomesims` is an R package for the simulation of gene-environment correlation.
