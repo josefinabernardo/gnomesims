@@ -9,7 +9,7 @@ vignette: >
 
 ## Purpose
 
-The `gnomesims` package is designed to provide estimates of gene-environment correlation for simulated data. It is a tool for researchers who use polygenic scores of twins, parents and siblings to detect gene-environment correlation and want to address issues of power, sample size and effect size. We focus on two types of gene-environment correlation, namely, cultural transmission (=genetic nurture) and sibling interaction.
+The `gnomesims` package is designed to provide estimates of gene-environment correlation for simulated data. It is a tool for researchers who use polygenic scores of twins, parents and siblings to detect gene-environment correlation and want to address issues of power, sample size and effect size. We focus on two types of gene-environment correlation, namely, cultural transmission (= genetic nurture) and sibling interaction.
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
@@ -19,6 +19,15 @@ knitr::opts_chunk$set(
 ```
 
 ## Setup
+
+You can install `gnomesims` from its' Github repository using `devtools`.
+
+```{r, results = "hide", message = FALSE}
+# install.packages("devtools")
+devtools::install_github("josefinabernardo/gnomesims")
+```
+
+Next, you can load it into you current session.
 
 ```{r setup}
 library(gnomesims)

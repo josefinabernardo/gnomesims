@@ -84,13 +84,19 @@ of gene-environment correlation for simulated data. It is a tool for
 researchers who use polygenic scores of twins, parents and siblings to
 detect gene-environment correlation and want to address issues of power,
 sample size and effect size. We focus on two types of gene-environment
-correlation, namely, cultural transmission (=genetic nurture) and
+correlation, namely, cultural transmission (= genetic nurture) and
 sibling interaction.</p>
 </div>
 <div class="section level2">
 <h2 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
 </h2>
+<p>You can install <code>gnomesims</code> from its’ Github repository
+using <code>devtools</code>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"josefinabernardo/gnomesims"</span><span class="op">)</span></span></code></pre></div>
+<p>Next, you can load it into you current session.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">gnomesims</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">

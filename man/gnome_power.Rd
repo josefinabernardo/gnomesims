@@ -2,7 +2,7 @@
 % Please edit documentation in R/gnome_power.R
 \name{gnome_power}
 \alias{gnome_power}
-\title{Function to calculate power from the non-centrality parameter}
+\title{Power Function}
 \usage{
 gnome_power(alpha = 0.05, df, ncp)
 }

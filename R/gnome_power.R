@@ -1,4 +1,5 @@
 #' Power Function
+#'
 #' Function to calculate power from the non-centrality parameter
 #'
 #' @importFrom stats pchisq qchisq

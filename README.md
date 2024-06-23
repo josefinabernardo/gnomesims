@@ -6,11 +6,11 @@
   
 ## Overview
 
-`gnomesims` is an R package for the simulation of gene-environment correlation.
+`gnomesims` is an R package for the simulation of gene-environment correlation. It accompanies a paper on a siulation study provisionally titled 'A simulation study on detecting cultural transmission and sibling interaction using polygenic scores'.
 
 ## Installation
 
-You can install the development version of `gnomesims` from GitHub with:
+You can install the development version of `gnomesims` from GitHub using:
 
 ```r
 # install.packages("devtools")
@@ -24,7 +24,7 @@ For detailed documentation please refer to the vignette: [How to use gnomesims](
 </td>
 <td>
 
-<img src="man/figures/logo.png" style="height:200px;" alt="Gnomesims Logo" />
+<img src="man/figures/logo.png" style="width:100px; height:100px;" alt="Gnomesims Logo" />
 
 </td>
 </tr>

@@ -1,8 +1,3 @@
-# Load in packages
-library(MASS) # for exact simulation
-library(OpenMx) # for SEM
-library(dplyr) # for data processing
-
 # Define defaults outside of function
 default_a <- sqrt(c(.4))
 default_c <- sqrt(c(.3))
@@ -11,8 +6,15 @@ default_ct <- sqrt(c(0, .0025, .01))
 default_si <- sqrt(c(0, .0025, .01))
 default_x <- 0
 
-# Function to run OpenMx models estimating cultural transmission and sibling interaction on simulated data
+#' OpenMx Simulation Function
+#'
 #' Function to run OpenMx models estimating cultural transmission and sibling interaction on simulated data
+#'
+#' @import OpenMx
+#' @importFrom MASS mvrnorm
+#' @importFrom dplyr mutate distinct
+#' @importFrom stats D cor var
+#' @importFrom magrittr %>%
 #'
 #' @param alpha Alpha used to calculate power
 #' @param seed Set a seed if desired
@@ -24,7 +26,7 @@ default_x <- 0
 #' @param e Unique environmental path coefficient
 #' @param ct Cultural Transmission - Parent genotype to child phenotype
 #' @param si Sibling Interaction - Sibling 1 genotype to sibling 2 phenotype
-#' @param x Sibling INteraction at the phenotypic level
+#' @param x Sibling Interaction at the phenotypic level
 #' @param nloci Number of diallelic loci
 #' @param npgsloci Number of loci comprising the PGS
 #'
@@ -32,7 +34,7 @@ default_x <- 0
 #' @export
 #'
 #' @examples
-#' gnome_mx_simulation()
+#' gnome_mx_simulation(ct = .01, si = .025, npgsloci = 10)
 gnome_mx_simulation <- function(
     alpha = .05, # Alpha for power
     seed = NA, # Set a seed if desired
@@ -46,49 +48,49 @@ gnome_mx_simulation <- function(
     si = default_si, # Sibling Interaction - Sibling 1 genotype to sibling 2 phenotype
     x = default_x, # Sibling interaction at the phenotypic level
     nloci = 100, # Number of diallelic loci
-    npgsloci = 10 # Number of loci comprising the PGS
+    npgsloci = c(2, 5, 10, 15) # Number of loci comprising the PGS
 ){
 
   #Create all possible parameter combinations
   param_combinations <- expand.grid(a = a, c = c, e = e, x = x, ct = ct, si = si)
 
-  # Only retain distinct combinations where A + C + E = 1
+  # Only retain distinct combinations
   filtered_combinations <- dplyr::distinct(param_combinations)
 
   # Number of settings we iterate through
-  n_set = nrow(filtered_combinations)
+  n_set <- nrow(filtered_combinations)
 
   # R2 of the polygenic scores
-  global_ppgs = npgsloci/nloci
+  global_ppgs <- npgsloci/nloci
 
   # Initiate counters
-  counter_within = 0  # counts sets within PGS setting
-  counter_overall = 0 # counts sets overall
+  counter_within <- 0  # counts sets within PGS setting
+  counter_overall <- 0 # counts sets overall
 
   # Determine number of rows for data frames
-  n_rows = n_set * length(global_ppgs)
+  n_rows <- n_set * length(global_ppgs)
 
   # Pre-allocate data frames with the appropriate dimensions
-  final_mx_estimates <- data.frame(matrix(NA, nrow = n_rows, ncol = 26))
-  final_mx_power <- data.frame(matrix(NA, nrow = n_rows, ncol = 26))
+  final_mx_estimates <- data.frame(matrix(NA, nrow = n_rows, ncol = 18))
+  final_mx_power <- data.frame(matrix(NA, nrow = n_rows, ncol = 18))
 
   # Create
-  setkeep = matrix(NA, n_set, 10)   # to keep settings
-  mxkeep = matrix(NA, n_set, 32) # openmx results
+  setkeep <- matrix(NA, n_set, 10)   # to keep settings
+  mxkeep <- matrix(NA, n_set, 16) # openmx results
 
-  colnames(setkeep) = c('nmz','ndz','a','c','e', 'x', 'ct','si','pgs','A')
+  colnames(setkeep) <- c('nmz','ndz','a','c','e', 'x', 'g','b','pgs','A')
 
   # Print number of settings to the user
   print(paste('The factorial design has', n_set, 'setting(s).'))
 
   for (ngp_i in seq_along(npgsloci)) {
 
-    ngp = nloci[ngp_i]
-    p_pgs = global_ppgs[ngp_i]  # percentage of genetic variance explained by pgs
+    ngp <- nloci[ngp_i]
+    p_pgs <- global_ppgs[ngp_i]  # percentage of genetic variance explained by pgs
 
     print(paste('Running simulation proportion of genetic variance explained by the PGS is:', p_pgs, "."))
 
-    p_A=1-p_pgs # not explained = A without pgs effect
+    p_A <- 1-p_pgs # not explained = A without pgs effect
     # e.g., if par_as^2 = .4, then this A variance is due to ng genes
     #                         of .4*(npg/ng) is due to the PGS
     #                         Given var(PH) = 1 (assuming no covAC), the PGS explained {.4*(npg/ng)}/1 of the phenotypic variance
@@ -101,12 +103,12 @@ gnome_mx_simulation <- function(
       par_g <- filtered_combinations$ct[i]
       par_b <- filtered_combinations$si[i]
 
-      counter_within = counter_within + 1 # count sets in factorial design
-      counter_overall = counter_overall + 1 # count sets overall
+      counter_within <- counter_within + 1 # count sets in factorial design
+      counter_overall <- counter_overall + 1 # count sets overall
       #
       print(c(counter_overall))
       #
-      setkeep[counter_within,1:10] = c(nmz, ndz, par_a, par_c, par_e, par_g, par_b, par_x, p_pgs, p_A)
+      setkeep[counter_within,1:10] <- c(nmz, ndz, par_a, par_c, par_e, par_g, par_b, par_x, p_pgs, p_A)
       #colnames(setkeep) = c('nmz','ndz','a','c','e','g','b','x','pgs','A')
       #
       VA1=p_A; VP=p_pgs;VC=1; VE=1 # .... VA1+VP = par_as^2
@@ -122,8 +124,8 @@ gnome_mx_simulation <- function(
       #
       # simulate the latent variables exactly
       #
-      Ldz=mvrnorm(ndz, rep(0,11), Sigma=SLdz, emp=T)  # emp=T means exact data simulation, cov(Ldz) = SLdz
-      Lmz=mvrnorm(nmz, rep(0,11), Sigma=SLmz, emp=T)  # emp=T means exact data simulation, cov(Lmz) = SLmz  #
+      Ldz=MASS::mvrnorm(ndz, rep(0,11), Sigma=SLdz, emp=T)  # emp=T means exact data simulation, cov(Ldz) = SLdz
+      Lmz=MASS::mvrnorm(nmz, rep(0,11), Sigma=SLmz, emp=T)  # emp=T means exact data simulation, cov(Lmz) = SLmz  #
       # build the exact simulated data DZ
       Am_=Ldz[,1]
       Pm=Ldz[,2] # PGS
@@ -311,88 +313,88 @@ gnome_mx_simulation <- function(
       RAfree=matrix(F,4,4)
       RAlabels=matrix(NA,4,4)
       #
-      M1 = mxModel("M1",
-                   mxMatrix(type='Full', nrow=5, ncol=6, free=F, values=Filter, labels=c(NA), name='Filter'),
-                   # mean
-                   mxMatrix(type="Full", nrow=1, ncol=6,
-                            #
-                            free=c(T,T,T,T,T,T),
-                            values=c(0,0,0,0,0,0),
-                            label=c("mph","mph","mpgs","mpgs","mpgs","mpgs"),
-                            name="expMeandz"),
-                   mxAlgebra(expression=(expMeandz%*%t(Filter)), name="expMeanmz"),
-                   # pgs stdevs matrix D
-                   mxMatrix(type="Diag", nrow=4, ncol=4,
-                            free=c(T,T,T,T),
-                            values=c(.7,.7,.7,.7),
-                            labels=c("sdp","sdp","sdp","sdp"), lbound=.01,
-                            name="D"),
-                   # pgs correlation matris F
-                   mxMatrix(type="Symm", nrow=4, ncol=4,
-                            free=RAfree, values=RAdz, labels=RAlabels, name="Fdz"),
-                   mxMatrix(type="Symm", nrow=4, ncol=4,
-                            free=RAfree, values=RAmz, labels=RAlabels, name="Fmz"),
-                   # A matrix for P = A + C + E
-                   mxMatrix(type="Symm", nrow=2, ncol=2,
-                            free=c(F), values=RAdz[1:2,1:2], labels=c(NA), name="Adz"),
-                   mxMatrix(type="Symm", nrow=2, ncol=2,
-                            free=c(F), values=RAmz[1:2,1:2], labels=c(NA), name="Amz"),
-                   # C matrix for P = A + C + E
-                   mxMatrix(type="Symm", nrow=2, ncol=2,
-                            free=c(F), values=c(1), labels=c(NA), name="C"),
-                   # E
-                   mxMatrix(type="Iden", nrow=2, ncol=2, name="E"),
-                   #
-                   # A matrix for P = A + C + E
-                   mxMatrix(type="Symm", nrow=1, ncol=1,
-                            free=c(T), values=c(.33), labels=c("sa2"), name="Av"),
-                   # C matrix for P = A + C + E
-                   mxMatrix(type="Symm", nrow=1, ncol=1,
-                            free=c(T), values=c(.33), labels=c("sc2"), name="Cv"),
-                   # E matrix for P = A + C + E
-                   mxMatrix(type="Symm", nrow=1, ncol=1,
-                            free=c(T), values=c(.33), labels=c("se2"), name="Ev"),
-                   #
-                   mxMatrix(type="Full", nrow=2, ncol=4,
-                            free=matrix(c(
-                              T,T,T,T,
-                              T,T,T,T),2,4,byrow=T),
-                            label=matrix(c(
-                              'a1','b1','g1','g1',
-                              'b1','a1','g1','g1'),2,4,byrow=T),
-                            values=matrix(c(
-                              .1, 0, .01,.01,
-                              0,.1, .01,.01),2,4,byrow=T), name='G'),
-                   #
-                   mxAlgebra(expression=Av%x%Amz + Cv%x%C + Ev%x%E, name="Ymz"),
-                   mxAlgebra(expression=Av%x%Adz + Cv%x%C + Ev%x%E, name="Ydz"),
-                   mxAlgebra(expression=D%*%Fdz%*%t(D), name="Pdz"),
-                   mxAlgebra(expression=D%*%Fmz%*%t(D), name="Pmz"),
-                   mxAlgebra(expression=G%*%Pdz%*%t(G)+Ydz, name="Sdz1"),
-                   mxAlgebra(expression=G%*%Pmz%*%t(G)+Ymz, name="Smz1"),
-                   #
-                   #   mxAlgebra(expression=G%*%D%*%Pmz, name="GDPmz"),
-                   #   mxAlgebra(expression=G%*%D%*%Pdz, name="GDPdz"),
-                   mxAlgebra(expression=G%*%Pmz, name="GDPmz"),
-                   mxAlgebra(expression=G%*%Pdz, name="GDPdz"),
-                   mxAlgebra(expression=Filter%*%rbind(cbind(Smz1,GDPmz),cbind(t(GDPmz),Pmz))%*%t(Filter), name="Smz"),
-                   mxAlgebra(expression=rbind(cbind(Sdz1,GDPdz),cbind(t(GDPdz),Pdz)), name="Sdz"),
-                   #
-                   mxCI(c('b1','a1','g1'))
-                   #
+      M1 <- mxModel("M1",
+                    mxMatrix(type='Full', nrow=5, ncol=6, free=F, values=Filter, labels=c(NA), name='Filter'),
+                    # mean
+                    mxMatrix(type="Full", nrow=1, ncol=6,
+                             #
+                             free=c(T,T,T,T,T,T),
+                             values=c(0,0,0,0,0,0),
+                             label=c("mph","mph","mpgs","mpgs","mpgs","mpgs"),
+                             name="expMeandz"),
+                    mxAlgebra(expression=(expMeandz%*%t(Filter)), name="expMeanmz"),
+                    # pgs stdevs matrix D
+                    mxMatrix(type="Diag", nrow=4, ncol=4,
+                             free=c(T,T,T,T),
+                             values=c(.7,.7,.7,.7),
+                             labels=c("sdp","sdp","sdp","sdp"), lbound=.01,
+                             name="D"),
+                    # pgs correlation matris F
+                    mxMatrix(type="Symm", nrow=4, ncol=4,
+                             free=RAfree, values=RAdz, labels=RAlabels, name="Fdz"),
+                    mxMatrix(type="Symm", nrow=4, ncol=4,
+                             free=RAfree, values=RAmz, labels=RAlabels, name="Fmz"),
+                    # A matrix for P = A + C + E
+                    mxMatrix(type="Symm", nrow=2, ncol=2,
+                             free=c(F), values=RAdz[1:2,1:2], labels=c(NA), name="Adz"),
+                    mxMatrix(type="Symm", nrow=2, ncol=2,
+                             free=c(F), values=RAmz[1:2,1:2], labels=c(NA), name="Amz"),
+                    # C matrix for P = A + C + E
+                    mxMatrix(type="Symm", nrow=2, ncol=2,
+                             free=c(F), values=c(1), labels=c(NA), name="C"),
+                    # E
+                    mxMatrix(type="Iden", nrow=2, ncol=2, name="E"),
+                    #
+                    # A matrix for P = A + C + E
+                    mxMatrix(type="Symm", nrow=1, ncol=1,
+                             free=c(T), values=c(.33), labels=c("sa2"), name="Av"),
+                    # C matrix for P = A + C + E
+                    mxMatrix(type="Symm", nrow=1, ncol=1,
+                             free=c(T), values=c(.33), labels=c("sc2"), name="Cv"),
+                    # E matrix for P = A + C + E
+                    mxMatrix(type="Symm", nrow=1, ncol=1,
+                             free=c(T), values=c(.33), labels=c("se2"), name="Ev"),
+                    #
+                    mxMatrix(type="Full", nrow=2, ncol=4,
+                             free=matrix(c(
+                               T,T,T,T,
+                               T,T,T,T),2,4,byrow=T),
+                             label=matrix(c(
+                               'a1','b1','g1','g1',
+                               'b1','a1','g1','g1'),2,4,byrow=T),
+                             values=matrix(c(
+                               .1, 0, .01,.01,
+                               0,.1, .01,.01),2,4,byrow=T), name='G'),
+                    #
+                    mxAlgebra(expression=Av%x%Amz + Cv%x%C + Ev%x%E, name="Ymz"),
+                    mxAlgebra(expression=Av%x%Adz + Cv%x%C + Ev%x%E, name="Ydz"),
+                    mxAlgebra(expression=D%*%Fdz%*%t(D), name="Pdz"),
+                    mxAlgebra(expression=D%*%Fmz%*%t(D), name="Pmz"),
+                    mxAlgebra(expression=G%*%Pdz%*%t(G)+Ydz, name="Sdz1"),
+                    mxAlgebra(expression=G%*%Pmz%*%t(G)+Ymz, name="Smz1"),
+                    #
+                    #   mxAlgebra(expression=G%*%D%*%Pmz, name="GDPmz"),
+                    #   mxAlgebra(expression=G%*%D%*%Pdz, name="GDPdz"),
+                    mxAlgebra(expression=G%*%Pmz, name="GDPmz"),
+                    mxAlgebra(expression=G%*%Pdz, name="GDPdz"),
+                    mxAlgebra(expression=Filter%*%rbind(cbind(Smz1,GDPmz),cbind(t(GDPmz),Pmz))%*%t(Filter), name="Smz"),
+                    mxAlgebra(expression=rbind(cbind(Sdz1,GDPdz),cbind(t(GDPdz),Pdz)), name="Sdz"),
+                    #
+                    mxCI(c('b1','a1','g1'))
+                    #
       )
 
-      DZ =  mxModel('DZ',
-                    mxData( observed=w_dzdat, type="raw"),
-                    mxExpectationNormal( covariance="M1.Sdz", means="M1.expMeandz",
-                                         dimnames=vnamesdz),  # the fit function
-                    mxFitFunctionML()
+      DZ <-  mxModel('DZ',
+                     mxData( observed=w_dzdat, type="raw"),
+                     mxExpectationNormal( covariance="M1.Sdz", means="M1.expMeandz",
+                                          dimnames=vnamesdz),  # the fit function
+                     mxFitFunctionML()
       )
-      MZ =  mxModel('MZ',
-                    mxData( observed=w_mzdat, type="raw"),
-                    mxExpectationNormal( covariance="M1.Smz", means="M1.expMeanmz",
-                                         dimnames=vnamesmz),  # the fit function
-                    mxFitFunctionML()
+      MZ <-  mxModel('MZ',
+                     mxData( observed=w_mzdat, type="raw"),
+                     mxExpectationNormal( covariance="M1.Smz", means="M1.expMeanmz",
+                                          dimnames=vnamesmz),  # the fit function
+                     mxFitFunctionML()
       )
 
       #
@@ -405,19 +407,19 @@ gnome_mx_simulation <- function(
       Model_1out <- mxRun(Model_1, intervals=F)
       #
       summary(Model_1out)
-      sat_1out = mxRefModels(Model_1out, run=T)
+      sat_1out <- mxRefModels(Model_1out, run=T)
       mxCompare(sat_1out, Model_1out)
       #
       #
-      Model_1b = omxSetParameters(Model_1out, labels=c('b1'), free=F, values=c(0))
+      Model_1b <- omxSetParameters(Model_1out, labels=c('b1'), free=F, values=c(0))
       Model_1b_out <- mxRun(Model_1b, intervals=T)
       mxCompare(Model_1out, Model_1b_out)
 
-      Model_1g = omxSetParameters(Model_1out, labels=c('g1'), free=F, values=c(0))
+      Model_1g <- omxSetParameters(Model_1out, labels=c('g1'), free=F, values=c(0))
       Model_1g_out <- mxRun(Model_1g, intervals=T)
       mxCompare(Model_1out, Model_1g_out)
 
-      Model_1bg = omxSetParameters(Model_1out, labels=c('g1','b1'), free=F, values=c(0))
+      Model_1bg <- omxSetParameters(Model_1out, labels=c('g1','b1'), free=F, values=c(0))
       Model_1bg_out <- mxRun(Model_1bg, intervals=T)
       mxCompare(Model_1out, Model_1bg_out)
       #
@@ -434,73 +436,73 @@ gnome_mx_simulation <- function(
       # [1] "pgsm"  "pgsf"  "pgst1" "pgst2" "pht1"  "pht2"  "pgsmf" "mpgst"
       nphen1=1
       nphen2=2
-      ACE1  = mxModel("ACE",
-                      #
-                      # Matrices a, c, and e to store the a, c, and e path coefficients
-                      mxMatrix(type="Lower", nrow=nphen1, ncol=nphen1,
-                               free=c(T), values=t(.3),
-                               label=c("a11"),name="a"),
-                      mxMatrix(type="Lower", nrow=nphen1, ncol=nphen1,
-                               free=c(T), values=c(.2),
-                               label=c("c11"),name="c"),
-                      mxMatrix(type="Lower", nrow=nphen1, ncol=nphen1,
-                               free=c(T), values=c(.7),
-                               label=c("e11"),name="e"),
-                      #
-                      # Matrixes A, C, and E to compute A, C, and E variance components
-                      #
-                      #   mxAlgebra( expression=a %*% t(a), name="A"),    # a^2
-                      #   mxAlgebra( expression=c %*% t(c), name="C"),    # c^2
-                      #   mxAlgebra( expression=e %*% t(e), name="E"),    # e^2
-                      mxAlgebra( expression=a, name="A"),    # a^2
-                      mxAlgebra( expression=c, name="C"),    # c^2
-                      mxAlgebra( expression=e, name="E"),    # e^2
-                      #
-                      #
-                      # Matrix expCovMZ for expected covariance matrix for MZ twins
-                      mxAlgebra( expression=
-                                   rbind( cbind(A+C+E, A+C),
-                                          cbind(A+C, A+C+E)),name="expCovMZ"),
-                      # Matrix expCovMZ for expected covariance matrix for DZ twins
-                      mxAlgebra( expression=
-                                   rbind( cbind(A+C+E, .5%x%A+C),
-                                          cbind(.5%x%A+C, A+C+E)),name="expCovDZ")
+      ACE1  <- mxModel("ACE",
+                       #
+                       # Matrices a, c, and e to store the a, c, and e path coefficients
+                       mxMatrix(type="Lower", nrow=nphen1, ncol=nphen1,
+                                free=c(T), values=t(.3),
+                                label=c("a11"),name="a"),
+                       mxMatrix(type="Lower", nrow=nphen1, ncol=nphen1,
+                                free=c(T), values=c(.2),
+                                label=c("c11"),name="c"),
+                       mxMatrix(type="Lower", nrow=nphen1, ncol=nphen1,
+                                free=c(T), values=c(.7),
+                                label=c("e11"),name="e"),
+                       #
+                       # Matrixes A, C, and E to compute A, C, and E variance components
+                       #
+                       #   mxAlgebra( expression=a %*% t(a), name="A"),    # a^2
+                       #   mxAlgebra( expression=c %*% t(c), name="C"),    # c^2
+                       #   mxAlgebra( expression=e %*% t(e), name="E"),    # e^2
+                       mxAlgebra( expression=a, name="A"),    # a^2
+                       mxAlgebra( expression=c, name="C"),    # c^2
+                       mxAlgebra( expression=e, name="E"),    # e^2
+                       #
+                       #
+                       # Matrix expCovMZ for expected covariance matrix for MZ twins
+                       mxAlgebra( expression=
+                                    rbind( cbind(A+C+E, A+C),
+                                           cbind(A+C, A+C+E)),name="expCovMZ"),
+                       # Matrix expCovMZ for expected covariance matrix for DZ twins
+                       mxAlgebra( expression=
+                                    rbind( cbind(A+C+E, .5%x%A+C),
+                                           cbind(.5%x%A+C, A+C+E)),name="expCovDZ")
       )
       # a model the data, the fit function (MZ)
-      MZmodel=mxModel("MZ",
-                      #
-                      # Matrix expMean for expected mean vector for MZ and DZ twins
-                      mxMatrix(type="Full", nrow=1, ncol=4, free=F, labels=c("data.pgst1","data.pgst2","data.pgsm","data.pgsf"), name="pred"),
-                      mxMatrix(type="Full", nrow=1, ncol=4, free=c(T,T,T,T), values=c(0,0,0,0),
-                               labels=c("bpgst","bpgsb","bpgsg","bpgsg"), name="bs1"),
-                      mxMatrix(type="Full", nrow=1, ncol=4, free=T, values=c(0,0,0,0),
-                               labels=c("bpgsb","bpgst","bpgsg","bpgsg"), name="bs2"),
-                      mxMatrix(type="Full", nrow=1, ncol=1,
-                               free=c(T),values=c(0),label=c("b0"),
-                               name="Int"),
-                      mxAlgebra(expression=cbind(b0+pred%*%t(bs1), b0+pred%*%t(bs2)), name='expMean'),
-                      mxData(observed=phdatmz_e, type="raw"),
-                      mxExpectationNormal(covariance="ACE.expCovMZ",
-                                          means = "expMean", varnames),
-                      mxFitFunctionML()
+      MZmodel <- mxModel("MZ",
+                         #
+                         # Matrix expMean for expected mean vector for MZ and DZ twins
+                         mxMatrix(type="Full", nrow=1, ncol=4, free=F, labels=c("data.pgst1","data.pgst2","data.pgsm","data.pgsf"), name="pred"),
+                         mxMatrix(type="Full", nrow=1, ncol=4, free=c(T,T,T,T), values=c(0,0,0,0),
+                                  labels=c("bpgst","bpgsb","bpgsg","bpgsg"), name="bs1"),
+                         mxMatrix(type="Full", nrow=1, ncol=4, free=T, values=c(0,0,0,0),
+                                  labels=c("bpgsb","bpgst","bpgsg","bpgsg"), name="bs2"),
+                         mxMatrix(type="Full", nrow=1, ncol=1,
+                                  free=c(T),values=c(0),label=c("b0"),
+                                  name="Int"),
+                         mxAlgebra(expression=cbind(b0+pred%*%t(bs1), b0+pred%*%t(bs2)), name='expMean'),
+                         mxData(observed=phdatmz_e, type="raw"),
+                         mxExpectationNormal(covariance="ACE.expCovMZ",
+                                             means = "expMean", varnames),
+                         mxFitFunctionML()
       )
       # a model the data, the fit function (DZ)
-      DZmodel=mxModel("DZ",
-                      #
-                      # Matrix expMean for expected mean vector for MZ and DZ twins
-                      mxMatrix(type="Full", nrow=1, ncol=4, free=F, labels=c("data.pgst1","data.pgst2","data.pgsm","data.pgsf"), name="pred"),
-                      mxMatrix(type="Full", nrow=1, ncol=4, free=c(T,T,T,T), values=c(0,0,0,0),
-                               labels=c("bpgst","bpgsb","bpgsg","bpgsg"), name="bs1"),
-                      mxMatrix(type="Full", nrow=1, ncol=4, free=T, values=c(0,0,0,0),
-                               labels=c("bpgsb","bpgst","bpgsg","bpgsg"), name="bs2"),
-                      mxMatrix(type="Full", nrow=1, ncol=1,
-                               free=c(T),values=c(0),label=c("b0"),
-                               name="Int"),
-                      mxAlgebra(expression=cbind(b0+pred%*%t(bs1), b0+pred%*%t(bs2)), name='expMean'),
-                      mxData(observed=phdatdz_e, type="raw"),
-                      mxExpectationNormal(covariance="ACE.expCovDZ",
-                                          means = "expMean", varnames),
-                      mxFitFunctionML()
+      DZmodel <- mxModel("DZ",
+                         #
+                         # Matrix expMean for expected mean vector for MZ and DZ twins
+                         mxMatrix(type="Full", nrow=1, ncol=4, free=F, labels=c("data.pgst1","data.pgst2","data.pgsm","data.pgsf"), name="pred"),
+                         mxMatrix(type="Full", nrow=1, ncol=4, free=c(T,T,T,T), values=c(0,0,0,0),
+                                  labels=c("bpgst","bpgsb","bpgsg","bpgsg"), name="bs1"),
+                         mxMatrix(type="Full", nrow=1, ncol=4, free=T, values=c(0,0,0,0),
+                                  labels=c("bpgsb","bpgst","bpgsg","bpgsg"), name="bs2"),
+                         mxMatrix(type="Full", nrow=1, ncol=1,
+                                  free=c(T),values=c(0),label=c("b0"),
+                                  name="Int"),
+                         mxAlgebra(expression=cbind(b0+pred%*%t(bs1), b0+pred%*%t(bs2)), name='expMean'),
+                         mxData(observed=phdatdz_e, type="raw"),
+                         mxExpectationNormal(covariance="ACE.expCovDZ",
+                                             means = "expMean", varnames),
+                         mxFitFunctionML()
       )
 
       varnames=c('pht1','pht2')#
@@ -533,22 +535,22 @@ gnome_mx_simulation <- function(
                                    SD%*%Rdz%*%SD,,name="expCovDZ")
       )
       # a model the data, the fit function (MZ)
-      MZmodel=mxModel("MZ",
-                      #
-                      # Matrix expMean for expected mean vector for MZ and DZ twins
-                      mxMatrix(type="Full", nrow=1, ncol=4, free=F, labels=c("data.pgst1","data.pgst2","data.pgsm","data.pgsf"), name="pred"),
-                      mxMatrix(type="Full", nrow=1, ncol=4, free=c(T,T,T,T), values=c(0,0,0,0),
-                               labels=c("bpgst","bpgsb","bpgsg","bpgsg"), name="bs1"),
-                      mxMatrix(type="Full", nrow=1, ncol=4, free=T, values=c(0,0,0,0),
-                               labels=c("bpgsb","bpgst","bpgsg","bpgsg"), name="bs2"),
-                      mxMatrix(type="Full", nrow=1, ncol=1,
-                               free=c(T),values=c(0),label=c("b0"),
-                               name="Int"),
-                      mxAlgebra(expression=cbind(b0+pred%*%t(bs1), b0+pred%*%t(bs2)), name='expMean'),
-                      mxData(observed=phdatmz_e, type="raw"),
-                      mxExpectationNormal(covariance="SAT.expCovMZ",
-                                          means = "expMean", varnames),
-                      mxFitFunctionML()
+      MZmodel <- mxModel("MZ",
+                         #
+                         # Matrix expMean for expected mean vector for MZ and DZ twins
+                         mxMatrix(type="Full", nrow=1, ncol=4, free=F, labels=c("data.pgst1","data.pgst2","data.pgsm","data.pgsf"), name="pred"),
+                         mxMatrix(type="Full", nrow=1, ncol=4, free=c(T,T,T,T), values=c(0,0,0,0),
+                                  labels=c("bpgst","bpgsb","bpgsg","bpgsg"), name="bs1"),
+                         mxMatrix(type="Full", nrow=1, ncol=4, free=T, values=c(0,0,0,0),
+                                  labels=c("bpgsb","bpgst","bpgsg","bpgsg"), name="bs2"),
+                         mxMatrix(type="Full", nrow=1, ncol=1,
+                                  free=c(T),values=c(0),label=c("b0"),
+                                  name="Int"),
+                         mxAlgebra(expression=cbind(b0+pred%*%t(bs1), b0+pred%*%t(bs2)), name='expMean'),
+                         mxData(observed=phdatmz_e, type="raw"),
+                         mxExpectationNormal(covariance="SAT.expCovMZ",
+                                             means = "expMean", varnames),
+                         mxFitFunctionML()
       )
       # a model the data, the fit function (DZ)
       DZmodel=mxModel("DZ",
@@ -569,58 +571,58 @@ gnome_mx_simulation <- function(
                       mxFitFunctionML()
       )
 
-      varnames=c('pht1','pht2')#
+      varnames <- c('pht1','pht2')#
       #
       # the model to calculate expected summary statistics
       # this is the twin model phenotypic
       # [1] "pht1"   "pht2"   "pgsm"   "pgsf"   "pgst1"  "pgsnt1" "pgst2"  "pgsnt2" "pgsmf"  "mpgst"
       # [1] "pgsm"  "pgsf"  "pgst1" "pgst2" "pht1"  "pht2"  "pgsmf" "mpgst"
-      nphen1=1
-      nphen2=2
-      DZModel  = mxModel("DZonly",
-                         #
-                         # Matrices a, c, and e to store the a, c, and e path coefficients
-                         mxMatrix(type="Stand", nrow=nphen2, ncol=nphen2,
-                                  free=c(T), values=c(.25),
-                                  label=c("rdz"),name="Rdz"),
-                         mxMatrix(type="Diag", nrow=nphen2, ncol=nphen2,
-                                  free=c(T), values=c(.7),
-                                  label=c("sd","sd"),name="SD"),
-                         #
-                         #
-                         # Matrix expCovMZ for expected covariance matrix for DZ twins
-                         #
-                         mxAlgebra( expression=
-                                      SD%*%Rdz%*%SD,,name="expCovDZ"),
-                         #
-                         # Matrix expMean for expected mean vector for DZ twins
-                         #
-                         mxMatrix(type="Full", nrow=1, ncol=4, free=F, labels=c("data.pgst1","data.pgst2","data.pgsm","data.pgsf"), name="pred"),
-                         mxMatrix(type="Full", nrow=1, ncol=4, free=c(T,T,T,T), values=c(0,0,0,0),
-                                  labels=c("bpgst","bpgsb","bpgsg","bpgsg"), name="bs1"),
-                         mxMatrix(type="Full", nrow=1, ncol=4, free=T, values=c(0,0,0,0),
-                                  labels=c("bpgsb","bpgst","bpgsg","bpgsg"), name="bs2"),
-                         mxMatrix(type="Full", nrow=1, ncol=1,
-                                  free=c(T),values=c(0),label=c("b0"),
-                                  name="B0"),
-                         mxAlgebra(expression=cbind(B0+pred%*%t(bs1), B0+pred%*%t(bs2)), name='expMean'),
-                         mxData(observed=phdatdz_e, type="raw"),
-                         mxExpectationNormal(covariance="expCovDZ",
-                                             means ="expMean", varnames),
-                         mxFitFunctionML()
+      nphen1 <- 1
+      nphen2 <- 2
+      DZModel  <-  mxModel("DZonly",
+                           #
+                           # Matrices a, c, and e to store the a, c, and e path coefficients
+                           mxMatrix(type="Stand", nrow=nphen2, ncol=nphen2,
+                                    free=c(T), values=c(.25),
+                                    label=c("rdz"),name="Rdz"),
+                           mxMatrix(type="Diag", nrow=nphen2, ncol=nphen2,
+                                    free=c(T), values=c(.7),
+                                    label=c("sd","sd"),name="SD"),
+                           #
+                           #
+                           # Matrix expCovMZ for expected covariance matrix for DZ twins
+                           #
+                           mxAlgebra( expression=
+                                        SD%*%Rdz%*%SD,,name="expCovDZ"),
+                           #
+                           # Matrix expMean for expected mean vector for DZ twins
+                           #
+                           mxMatrix(type="Full", nrow=1, ncol=4, free=F, labels=c("data.pgst1","data.pgst2","data.pgsm","data.pgsf"), name="pred"),
+                           mxMatrix(type="Full", nrow=1, ncol=4, free=c(T,T,T,T), values=c(0,0,0,0),
+                                    labels=c("bpgst","bpgsb","bpgsg","bpgsg"), name="bs1"),
+                           mxMatrix(type="Full", nrow=1, ncol=4, free=T, values=c(0,0,0,0),
+                                    labels=c("bpgsb","bpgst","bpgsg","bpgsg"), name="bs2"),
+                           mxMatrix(type="Full", nrow=1, ncol=1,
+                                    free=c(T),values=c(0),label=c("b0"),
+                                    name="B0"),
+                           mxAlgebra(expression=cbind(B0+pred%*%t(bs1), B0+pred%*%t(bs2)), name='expMean'),
+                           mxData(observed=phdatdz_e, type="raw"),
+                           mxExpectationNormal(covariance="expCovDZ",
+                                               means ="expMean", varnames),
+                           mxFitFunctionML()
       )
       # Model_4 <-  mxModel(name="DZ1SAT", DZModel)
       Model_4 <-  mxModel(DZModel)
       # fit the model
       Model_4out <- mxRun(Model_4)
 
-      Model_4g=omxSetParameters(Model_4out, labels='bpgsg', value=0, free=F)
+      Model_4g <- omxSetParameters(Model_4out, labels='bpgsg', value=0, free=F)
       Model_4g_out = mxRun(Model_4g)
       #
       Model_4b=omxSetParameters(Model_4out, labels='bpgsb', value=0, free=F)
-      Model_4b_out = mxRun(Model_4b)
+      Model_4b_out <- mxRun(Model_4b)
       # "bpgsb","bpgsg"
-      Model_4bg = omxSetParameters(Model_4out, labels=c('bpgsb','bpgsg'), free=F, values=c(0))
+      Model_4bg <- omxSetParameters(Model_4out, labels=c('bpgsb','bpgsg'), free=F, values=c(0))
       Model_4bg_out <- mxRun(Model_4bg)
 
       # Power
@@ -658,30 +660,30 @@ gnome_mx_simulation <- function(
     }
 
     # For mxkeep
-    jpow = 1:8
-    jest = 9:16
+    jpow <- 1:8
+    jest <- 9:16
 
-    mx_estimates <- cbind(setkeep[,1:10], round(mxkeep[,jest],3)) %>%
-      as.data.frame()
 
-    mx_power <- cbind(setkeep[,1:10], round(mxkeep[,jpow],3)) %>%
-      as.data.frame()
-
-    final_mx_estimates[counter_overall-n_set+1:counter_overall,] <- mx_estimates
-    final_mx_power[counter_overall-n_set+1:counter_overall,] <- mx_power
+    final_mx_estimates[counter_overall-n_set+1:counter_overall,] <- cbind(setkeep[,1:10], round(mxkeep[,jest],3))
+    final_mx_power[counter_overall-n_set+1:counter_overall,] <- cbind(setkeep[,1:10], round(mxkeep[,jpow],3))
 
     counter_within = 0 # reset set counter for each PGS setting
   }
+  print(final_mx_power)
   # Re-name columns
-  setnames = c('nmz','ndz','a','c','e','g','b','x','PGS','A')
-  colnames(mx_estimates) <- c(setnames, paste0("e", 1:8))
-  colnames(mx_power) <- c(setnames, paste0("p", 1:8))
+  setnames <- c('nmz','ndz','a','c','e','g','b','x','PGS','A')
+  colnames(final_mx_estimates) <- c(setnames, paste0("e", 1:8))
+  colnames(final_mx_power) <- c(setnames, paste0("p", 1:8))
+
+  print(final_mx_power)
 
   # Use effect size function on the data sets
-  final_mx_estimates <- mutate(mx_estimates, Smz = gnome_effect(a = a, c = c, e = e, g = g, b = b)$mz,
-                               Sdz = gnome_effect(a = a, c = c, e = e, g = g, b = b)$dz)
-  final_mx_power <- mutate(mx_power, Smz = gnome_effect(a = a, c = c, e = e, g = g, b = b)$mz,
-                           Sdz = gnome_effect(a = a, c = c, e = e, g = g, b = b)$dz)
+  final_mx_estimates <- final_mx_estimates %>%
+    mutate(Smz = gnome_effect(a = a, c = c, e = e, g = g, b = b)$mz,
+           Sdz = gnome_effect(a = a, c = c, e = e, g = g, b = b)$dz)
+  final_mx_power <- final_mx_power %>%
+    mutate(Smz = gnome_effect(a = a, c = c, e = e, g = g, b = b)$mz,
+           Sdz = gnome_effect(a = a, c = c, e = e, g = g, b = b)$dz)
 
   return(list(power = final_mx_power, params = final_mx_estimates))
 }

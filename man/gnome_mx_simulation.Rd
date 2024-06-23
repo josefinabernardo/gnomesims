@@ -2,7 +2,7 @@
 % Please edit documentation in R/gnome_mx_simulation.R
 \name{gnome_mx_simulation}
 \alias{gnome_mx_simulation}
-\title{Title}
+\title{OpenMx Simulation Function}
 \usage{
 gnome_mx_simulation(
   alpha = 0.05,
@@ -17,7 +17,7 @@ gnome_mx_simulation(
   si = default_si,
   x = default_x,
   nloci = 100,
-  npgsloci = 10
+  npgsloci = c(2, 5, 10, 15)
 )
 }
 \arguments{
@@ -41,7 +41,7 @@ gnome_mx_simulation(
 
 \item{si}{Sibling Interaction - Sibling 1 genotype to sibling 2 phenotype}
 
-\item{x}{Sibling INteraction at the phenotypic level}
+\item{x}{Sibling Interaction at the phenotypic level}
 
 \item{nloci}{Number of diallelic loci}
 
@@ -51,8 +51,8 @@ gnome_mx_simulation(
 List with data frame of power estimates and data frame of parameter estimates
 }
 \description{
-Title
+Function to run OpenMx models estimating cultural transmission and sibling interaction on simulated data
 }
 \examples{
-gnome_mx_simulation()
+gnome_mx_simulation(ct = .01, si = .025, npgsloci = 10)
 }

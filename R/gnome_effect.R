@@ -1,3 +1,5 @@
+#' Effect Size Function
+#'
 #' Function to calculate variance increase due to AC covariance
 #'
 #' @param a Additive genetic variance

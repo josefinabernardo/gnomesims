@@ -2,7 +2,7 @@
 % Please edit documentation in R/gnome_effect.R
 \name{gnome_effect}
 \alias{gnome_effect}
-\title{Function to calculate variance increase due to AC covariance}
+\title{Effect Size Function}
 \usage{
 gnome_effect(a, c, e, g, b)
 }
