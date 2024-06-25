@@ -37,6 +37,15 @@ library(gnomesims)
 
 The core function of `gnomesims` is the `gnome_mx_simulation()` function. It takes in the ACE estimates, sample sizes, and effect size measures as arguments and returns two data frames with power estimates and path coefficients.
 
+```{r}
+gnome_mx_simulation(ct = .01, si = .025, npgsloci = 10)
+```
+
+
 Embedded within the simulation is the function `gnome_power()` to calculate power from alpha, degrees of freedom and the non-centrality parameter.
 
 We recognize that the path coefficients are difficult to interpret. To solve this issue, the function `gnome_effect()` calculates a readily interpretable effect size measure.
+
+## In-built data sets
+
+To demonstrate what type of data this package can generate, we have included two in-built data sets.

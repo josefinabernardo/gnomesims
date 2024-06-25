@@ -669,13 +669,10 @@ gnome_mx_simulation <- function(
 
     counter_within = 0 # reset set counter for each PGS setting
   }
-  print(final_mx_power)
   # Re-name columns
   setnames <- c('nmz','ndz','a','c','e','g','b','x','PGS','A')
   colnames(final_mx_estimates) <- c(setnames, paste0("e", 1:8))
   colnames(final_mx_power) <- c(setnames, paste0("p", 1:8))
-
-  print(final_mx_power)
 
   # Use effect size function on the data sets
   final_mx_estimates <- final_mx_estimates %>%
