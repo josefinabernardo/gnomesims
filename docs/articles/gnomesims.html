@@ -95,11 +95,11 @@ using <code>devtools</code>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"josefinabernardo/gnomesims"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in i.p(...): installation of package 'RcppEigen' had non-zero exit</span></span>
-<span><span class="co">#&gt; status</span></span>
-<span><span class="co">#&gt; Warning in i.p(...): installation of package 'mvtnorm' had non-zero exit status</span></span>
-<span><span class="co">#&gt; Warning in i.p(...): installation of package 'StanHeaders' had non-zero exit</span></span>
-<span><span class="co">#&gt; status</span></span></code></pre></div>
+<span><span class="co">## Warning in i.p(...): installation of package 'RcppEigen' had non-zero exit</span></span>
+<span><span class="co">## status</span></span>
+<span><span class="co">## Warning in i.p(...): installation of package 'mvtnorm' had non-zero exit status</span></span>
+<span><span class="co">## Warning in i.p(...): installation of package 'StanHeaders' had non-zero exit</span></span>
+<span><span class="co">## status</span></span></code></pre></div>
 <p>Next, you can load it into you current session.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">gnomesims</span><span class="op">)</span></span></code></pre></div>
@@ -113,40 +113,20 @@ estimates, sample sizes, and effect size measures as arguments and
 returns two data frames with power estimates and path coefficients.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/gnome_mx_simulation.html">gnome_mx_simulation</a></span><span class="op">(</span>ct <span class="op">=</span> <span class="fl">.01</span>, si <span class="op">=</span> <span class="fl">.025</span>, npgsloci <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "The factorial design has 1 setting(s)."</span></span>
-<span><span class="co">#&gt; [1] "Running simulation proportion of genetic variance explained by the PGS is: 0.1 ."</span></span>
-<span><span class="co">#&gt; [1] 1</span></span>
-<span><span class="co">#&gt; Running MZDZModel with 9 parameters</span></span>
-<span><span class="co">#&gt; Running Saturated MZDZModel with 47 parameters</span></span>
-<span><span class="co">#&gt; Running Independence MZDZModel with 22 parameters</span></span>
-<span><span class="co">#&gt; Running MZDZModel with 8 parameters</span></span>
-<span><span class="co">#&gt; Running MZDZModel with 8 parameters</span></span>
-<span><span class="co">#&gt; Running MZDZModel with 7 parameters</span></span>
-<span><span class="co">#&gt; Running Saturated MZDZModel with 47 parameters</span></span>
-<span><span class="co">#&gt; Running Independence MZDZModel with 22 parameters</span></span>
-<span><span class="co">#&gt; Running DZonly with 6 parameters</span></span>
-<span><span class="co">#&gt; Running DZonly with 5 parameters</span></span>
-<span><span class="co">#&gt; Running DZonly with 5 parameters</span></span>
-<span><span class="co">#&gt; Running DZonly with 4 parameters</span></span>
-<span><span class="co">#&gt; Warning in cbind(setkeep[, 1:10], round(mxkeep[, jest], 3)): number of rows of</span></span>
-<span><span class="co">#&gt; result is not a multiple of vector length (arg 2)</span></span>
-<span><span class="co">#&gt; Warning in matrix(value, n, p): data length [20] is not a sub-multiple or</span></span>
-<span><span class="co">#&gt; multiple of the number of columns [18]</span></span>
-<span><span class="co">#&gt; Warning in cbind(setkeep[, 1:10], round(mxkeep[, jpow], 3)): number of rows of</span></span>
-<span><span class="co">#&gt; result is not a multiple of vector length (arg 2)</span></span>
-<span><span class="co">#&gt; Warning in matrix(value, n, p): data length [20] is not a sub-multiple or</span></span>
-<span><span class="co">#&gt; multiple of the number of columns [18]</span></span>
-<span><span class="co">#&gt; $power</span></span>
-<span><span class="co">#&gt;    nmz  ndz         a         c         e    g     b x PGS   A   p1    p2   p3</span></span>
-<span><span class="co">#&gt; 1 4000 4000 0.6324555 0.5477226 0.5477226 0.01 0.025 0 0.1 0.9 0.13 0.181 0.06</span></span>
-<span><span class="co">#&gt;      p4    p5    p6    p7    p8        Smz       Sdz</span></span>
-<span><span class="co">#&gt; 1 0.108 0.122 0.149 0.054 0.079 0.04559689 0.0297855</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $params</span></span>
-<span><span class="co">#&gt;    nmz  ndz         a         c         e    g     b x PGS   A    e1    e2   e3</span></span>
-<span><span class="co">#&gt; 1 4000 4000 0.6324555 0.5477226 0.5477226 0.01 0.025 0 0.1 0.9 0.023 0.031 0.01</span></span>
-<span><span class="co">#&gt;      e4    e5    e6   e7    e8        Smz       Sdz</span></span>
-<span><span class="co">#&gt; 1 0.025 0.029 0.032 0.01 0.025 0.04559689 0.0297855</span></span></code></pre></div>
+<span><span class="co">## [1] "The factorial design has 1 setting(s)."</span></span>
+<span><span class="co">## [1] "Running simulation proportion of genetic variance explained by the PGS is: 0.1 ."</span></span>
+<span><span class="co">## [1] 1</span></span>
+<span><span class="co">## $power</span></span>
+<span><span class="co">##    nmz  ndz         a         c         e    g     b x PGS   A   p1    p2   p3</span></span>
+<span><span class="co">## 1 4000 4000 0.6324555 0.5477226 0.5477226 0.01 0.025 0 0.1 0.9 0.13 0.181 0.06</span></span>
+<span><span class="co">##      p4    p5    p6    p7    p8        Smz       Sdz</span></span>
+<span><span class="co">## 1 0.108 0.122 0.149 0.054 0.079 0.04559689 0.0297855</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## $params</span></span>
+<span><span class="co">##    nmz  ndz         a         c         e    g     b x PGS   A    e1    e2   e3</span></span>
+<span><span class="co">## 1 4000 4000 0.6324555 0.5477226 0.5477226 0.01 0.025 0 0.1 0.9 0.023 0.031 0.01</span></span>
+<span><span class="co">##      e4    e5    e6   e7    e8        Smz       Sdz</span></span>
+<span><span class="co">## 1 0.025 0.029 0.032 0.01 0.025 0.04559689 0.0297855</span></span></code></pre></div>
 <p>Embedded within the simulation is the function
 <code><a href="../reference/gnome_power.html">gnome_power()</a></code> to calculate power from alpha, degrees of
 freedom and the non-centrality parameter.</p>
@@ -158,7 +138,33 @@ a readily interpretable effect size measure.</p>
 <h2 id="in-built-data-sets">In-built data sets<a class="anchor" aria-label="anchor" href="#in-built-data-sets"></a>
 </h2>
 <p>To demonstrate what type of data this package can generate, we have
-included two in-built data sets.</p>
+included two in-built data sets. They contain the results of the
+<code><a href="../reference/gnome_mx_simulation.html">gnome_mx_simulation()</a></code> function for 3 x 3 = 9 combination of
+AC covariance input parameters. The data set
+<code>gnome_power_data</code> contains the power results and the data
+set <code>gnome_params_data</code> contains parameter estimates.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">gnome_power_data</span></span>
+<span><span class="co">##    nmz  ndz    a    c    e   CT   SI x PGS   A CT(m1) MZDZ SI(m2) MZDZ</span></span>
+<span><span class="co">## 1 4000 4000 0.63 0.55 0.55 0.00 0.00 0 0.1 0.9       0.050       0.050</span></span>
+<span><span class="co">## 2 4000 4000 0.63 0.55 0.55 0.05 0.00 0 0.1 0.9       0.408       0.161</span></span>
+<span><span class="co">## 3 4000 4000 0.63 0.55 0.55 0.10 0.00 0 0.1 0.9       0.917       0.474</span></span>
+<span><span class="co">## 4 4000 4000 0.63 0.55 0.55 0.00 0.05 0 0.1 0.9       0.160       0.399</span></span>
+<span><span class="co">## 5 4000 4000 0.63 0.55 0.55 0.05 0.05 0 0.1 0.9       0.756       0.754</span></span>
+<span><span class="co">## 6 4000 4000 0.63 0.55 0.55 0.10 0.05 0 0.1 0.9       0.989       0.945</span></span>
+<span><span class="co">## 7 4000 4000 0.63 0.55 0.55 0.00 0.10 0 0.1 0.9       0.505       0.929</span></span>
+<span><span class="co">## 8 4000 4000 0.63 0.55 0.55 0.05 0.10 0 0.1 0.9       0.953       0.992</span></span>
+<span><span class="co">## 9 4000 4000 0.63 0.55 0.55 0.10 0.10 0 0.1 0.9       0.999       0.999</span></span>
+<span><span class="co">##   CT(m3) MZDZ SI(m3) MZDZ CT(m1) DZ SI(m2) DZ CT(m3) DZ SI(m3) DZ    Smz    Sdz</span></span>
+<span><span class="co">## 1       0.050       0.050     0.050     0.050     0.050     0.050  0.00%  0.00%</span></span>
+<span><span class="co">## 2       0.300       0.050     0.261     0.156     0.152     0.050  6.82%  6.82%</span></span>
+<span><span class="co">## 3       0.787       0.050     0.724     0.453     0.424     0.050 14.65% 14.65%</span></span>
+<span><span class="co">## 4       0.050       0.292     0.179     0.302     0.050     0.171  6.57%  3.41%</span></span>
+<span><span class="co">## 5       0.285       0.281     0.640     0.651     0.146     0.163 13.90% 10.74%</span></span>
+<span><span class="co">## 6       0.761       0.271     0.940     0.894     0.404     0.156 22.22% 19.06%</span></span>
+<span><span class="co">## 7       0.050       0.800     0.550     0.819     0.050     0.506 13.65%  7.32%</span></span>
+<span><span class="co">## 8       0.270       0.783     0.915     0.962     0.140     0.480 21.47% 15.15%</span></span>
+<span><span class="co">## 9       0.734       0.763     0.994     0.995     0.384     0.454 30.30% 23.97%</span></span></code></pre></div>
 </div>
   </div>
 

@@ -6,15 +6,13 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
-
 ## Purpose
 
 The `gnomesims` package is designed to provide estimates of gene-environment correlation for simulated data. It is a tool for researchers who use polygenic scores of twins, parents and siblings to detect gene-environment correlation and want to address issues of power, sample size and effect size. We focus on two types of gene-environment correlation, namely, cultural transmission (= genetic nurture) and sibling interaction.
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
+  collapse = TRUE
 )
 ```
 
@@ -37,7 +35,7 @@ library(gnomesims)
 
 The core function of `gnomesims` is the `gnome_mx_simulation()` function. It takes in the ACE estimates, sample sizes, and effect size measures as arguments and returns two data frames with power estimates and path coefficients.
 
-```{r}
+```{r warning=FALSE, message=FALSE}
 gnome_mx_simulation(ct = .01, si = .025, npgsloci = 10)
 ```
 
@@ -48,4 +46,8 @@ We recognize that the path coefficients are difficult to interpret. To solve thi
 
 ## In-built data sets
 
-To demonstrate what type of data this package can generate, we have included two in-built data sets.
+To demonstrate what type of data this package can generate, we have included two in-built data sets. They contain the results of the `gnome_mx_simulation()` function for 3 x 3 = 9 combination of AC covariance input parameters. The data set `gnome_power_data` contains the power results and the data set `gnome_params_data` contains parameter estimates.
+
+```{r}
+gnome_power_data
+```
