@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 
 You can install `gnomesims` from its' Github repository using `devtools`.
 
-```{r, results = "hide", message = FALSE}
+```{r warning=FALSE, results = "hide", message = FALSE}
 # install.packages("devtools")
 devtools::install_github("josefinabernardo/gnomesims")
 ```
