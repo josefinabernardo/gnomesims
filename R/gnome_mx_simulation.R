@@ -54,11 +54,8 @@ gnome_mx_simulation <- function(
   #Create all possible parameter combinations
   param_combinations <- expand.grid(a = a, c = c, e = e, x = x, ct = ct, si = si)
 
-  # Only retain distinct combinations
-  filtered_combinations <- dplyr::distinct(param_combinations)
-
   # Number of settings we iterate through
-  n_set <- nrow(filtered_combinations)
+  n_set <- nrow(param_combinations)
 
   # R2 of the polygenic scores
   global_ppgs <- npgsloci/nloci
@@ -78,8 +75,6 @@ gnome_mx_simulation <- function(
   setkeep <- matrix(NA, n_set, 10)   # to keep settings
   mxkeep <- matrix(NA, n_set, 16) # openmx results
 
-  colnames(setkeep) <- c('nmz','ndz','a','c','e', 'x', 'g','b','pgs','A')
-
   # Print number of settings to the user
   print(paste('The factorial design has', n_set, 'setting(s).'))
 
@@ -96,12 +91,12 @@ gnome_mx_simulation <- function(
     #                         Given var(PH) = 1 (assuming no covAC), the PGS explained {.4*(npg/ng)}/1 of the phenotypic variance
 
     for (i in 1:n_set) {
-      par_a <- filtered_combinations$a[i]
-      par_c <- filtered_combinations$c[i]
-      par_e <- filtered_combinations$e[i]
-      par_x <- filtered_combinations$x[i]
-      par_g <- filtered_combinations$ct[i]
-      par_b <- filtered_combinations$si[i]
+      par_a <- param_combinations$a[i]
+      par_c <- param_combinations$c[i]
+      par_e <- param_combinations$e[i]
+      par_x <- param_combinations$x[i]
+      par_g <- param_combinations$ct[i]
+      par_b <- param_combinations$si[i]
 
       counter_within <- counter_within + 1 # count sets in factorial design
       counter_overall <- counter_overall + 1 # count sets overall
@@ -109,7 +104,6 @@ gnome_mx_simulation <- function(
       print(c(counter_overall))
       #
       setkeep[counter_within,1:10] <- c(nmz, ndz, par_a, par_c, par_e, par_g, par_b, par_x, p_pgs, p_A)
-      #colnames(setkeep) = c('nmz','ndz','a','c','e','g','b','x','pgs','A')
       #
       VA1=p_A; VP=p_pgs;VC=1; VE=1 # .... VA1+VP = par_as^2
       ##
