@@ -71,13 +71,6 @@ gnome_mx_simulation <- function(
   final_mx_estimates <- data.frame(matrix(NA, nrow = n_rows, ncol = 18))
   final_mx_power <- data.frame(matrix(NA, nrow = n_rows, ncol = 18))
 
-  # Create
-  setkeep <- matrix(NA, n_set, 10)   # to keep settings
-  mxkeep <- matrix(NA, n_set, 16) # openmx results
-
-  # Print number of settings to the user
-  print(paste('The factorial design has', n_set, 'setting(s).'))
-
   for (ngp_i in seq_along(npgsloci)) {
 
     ngp <- nloci[ngp_i]
@@ -89,6 +82,13 @@ gnome_mx_simulation <- function(
     # e.g., if par_as^2 = .4, then this A variance is due to ng genes
     #                         of .4*(npg/ng) is due to the PGS
     #                         Given var(PH) = 1 (assuming no covAC), the PGS explained {.4*(npg/ng)}/1 of the phenotypic variance
+
+    # Create
+    setkeep <- matrix(NA, n_set, 10)   # to keep settings
+    mxkeep <- matrix(NA, n_set, 16) # openmx results
+
+    # Print number of settings to the user
+    print(paste('The factorial design has', n_set, 'setting(s).'))
 
     for (i in 1:n_set) {
       par_a <- param_combinations$a[i]
@@ -104,6 +104,7 @@ gnome_mx_simulation <- function(
       print(c(counter_overall))
       #
       setkeep[counter_within,1:10] <- c(nmz, ndz, par_a, par_c, par_e, par_g, par_b, par_x, p_pgs, p_A)
+      print(setkeep)
       #
       VA1=p_A; VP=p_pgs;VC=1; VE=1 # .... VA1+VP = par_as^2
       ##
@@ -657,9 +658,16 @@ gnome_mx_simulation <- function(
     jpow <- 1:8
     jest <- 9:16
 
+    row_index <- counter_overall - n_set + 1
 
-    final_mx_estimates[counter_overall-n_set+1:counter_overall,] <- cbind(setkeep[,1:10], round(mxkeep[,jest],3))
-    final_mx_power[counter_overall-n_set+1:counter_overall,] <- cbind(setkeep[,1:10], round(mxkeep[,jpow],3))
+    final_mx_estimates[row_index : counter_overall,1:10] <- setkeep[,1:10]
+    print(final_mx_estimates)
+    final_mx_estimates[row_index : counter_overall,11:18] <- round(mxkeep[,jest],3)
+    print(final_mx_estimates)
+    final_mx_power[row_index : counter_overall,1:10] <- setkeep[,1:10]
+    print(final_mx_power)
+    final_mx_power[row_index : counter_overall,11:18] <- round(mxkeep[,jpow],3)
+    print(final_mx_power)
 
     counter_within = 0 # reset set counter for each PGS setting
   }
