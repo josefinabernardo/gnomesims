@@ -8,7 +8,7 @@ Description: The package simulates genotyped family data of parents and offsprin
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Suggests: 
     knitr,
     rmarkdown,
@@ -19,7 +19,8 @@ Imports:
   MASS,
   OpenMx,
   dplyr,
-  magrittr
+  magrittr,
+  geepack
 Depends: 
     R (>= 2.10)
 LazyData: true

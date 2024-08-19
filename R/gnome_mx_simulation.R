@@ -429,40 +429,7 @@ gnome_mx_simulation <- function(
       # this is the twin model phenotypic
       # [1] "pht1"   "pht2"   "pgsm"   "pgsf"   "pgst1"  "pgsnt1" "pgst2"  "pgsnt2" "pgsmf"  "mpgst"
       # [1] "pgsm"  "pgsf"  "pgst1" "pgst2" "pht1"  "pht2"  "pgsmf" "mpgst"
-      nphen1=1
-      nphen2=2
-      ACE1  <- mxModel("ACE",
-                       #
-                       # Matrices a, c, and e to store the a, c, and e path coefficients
-                       mxMatrix(type="Lower", nrow=nphen1, ncol=nphen1,
-                                free=c(T), values=t(.3),
-                                label=c("a11"),name="a"),
-                       mxMatrix(type="Lower", nrow=nphen1, ncol=nphen1,
-                                free=c(T), values=c(.2),
-                                label=c("c11"),name="c"),
-                       mxMatrix(type="Lower", nrow=nphen1, ncol=nphen1,
-                                free=c(T), values=c(.7),
-                                label=c("e11"),name="e"),
-                       #
-                       # Matrixes A, C, and E to compute A, C, and E variance components
-                       #
-                       #   mxAlgebra( expression=a %*% t(a), name="A"),    # a^2
-                       #   mxAlgebra( expression=c %*% t(c), name="C"),    # c^2
-                       #   mxAlgebra( expression=e %*% t(e), name="E"),    # e^2
-                       mxAlgebra( expression=a, name="A"),    # a^2
-                       mxAlgebra( expression=c, name="C"),    # c^2
-                       mxAlgebra( expression=e, name="E"),    # e^2
-                       #
-                       #
-                       # Matrix expCovMZ for expected covariance matrix for MZ twins
-                       mxAlgebra( expression=
-                                    rbind( cbind(A+C+E, A+C),
-                                           cbind(A+C, A+C+E)),name="expCovMZ"),
-                       # Matrix expCovMZ for expected covariance matrix for DZ twins
-                       mxAlgebra( expression=
-                                    rbind( cbind(A+C+E, .5%x%A+C),
-                                           cbind(.5%x%A+C, A+C+E)),name="expCovDZ")
-      )
+
       # a model the data, the fit function (MZ)
       MZmodel <- mxModel("MZ",
                          #
@@ -506,29 +473,6 @@ gnome_mx_simulation <- function(
       # this is the twin model phenotypic
       # [1] "pht1"   "pht2"   "pgsm"   "pgsf"   "pgst1"  "pgsnt1" "pgst2"  "pgsnt2" "pgsmf"  "mpgst"
       # [1] "pgsm"  "pgsf"  "pgst1" "pgst2" "pht1"  "pht2"  "pgsmf" "mpgst"
-      nphen1=1
-      nphen2=2
-      SAT1  = mxModel("SAT",
-                      #
-                      # Matrices a, c, and e to store the a, c, and e path coefficients
-                      mxMatrix(type="Stand", nrow=nphen2, ncol=nphen2,
-                               free=c(T), values=c(.5),
-                               label=c("rmz"),name="Rmz"),
-                      mxMatrix(type="Stand", nrow=nphen2, ncol=nphen2,
-                               free=c(T), values=c(.25),
-                               label=c("rdz"),name="Rdz"),
-                      mxMatrix(type="Diag", nrow=nphen2, ncol=nphen2,
-                               free=c(T), values=c(.7),
-                               label=c("sd","sd"),name="SD"),
-                      #
-                      #
-                      # Matrix expCovMZ for expected covariance matrix for MZ twins
-                      mxAlgebra( expression=
-                                   SD%*%Rmz%*%SD,name="expCovMZ"),
-                      # Matrix expCovMZ for expected covariance matrix for DZ twins
-                      mxAlgebra( expression=
-                                   SD%*%Rdz%*%SD,,name="expCovDZ")
-      )
       # a model the data, the fit function (MZ)
       MZmodel <- mxModel("MZ",
                          #
