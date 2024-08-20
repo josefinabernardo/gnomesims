@@ -57,7 +57,7 @@ gnome_gee_simulation <- function(
     cmethod = 'independence' # Gee error covariance structure
 ){
 
-  print("The function has been updated to use /2 for the parents")
+  print("Updated via copy-paste")
 
   #Create all possible parameter combinations
   param_combinations <- expand.grid(a = a, c = c, e = e, x = x, ct = ct, si = si)
@@ -121,25 +121,25 @@ gnome_gee_simulation <- function(
       #                 1   2    3    4   5     6     7      8   9  10   11
       SLmz=SLdz=diag(c(VA1, VP, VA1, VP, VA1/2, VP/2,VA1/2, VP/2,VC, VE, VE))
       #
-      #SLmz[5,7]=SLmz[7,5]=VA1/2
-      #SLmz[6,8]=SLmz[8,6]=VP/2
+      #SLmz[5,7]=SLmz[7,5]=VA1/2   #
+      #SLmz[6,8]=SLmz[8,6]=VP/2    #
       #
       # simulate the latent variables exactly
       #
-      Ldz=MASS::mvrnorm(ndz, rep(0,11), Sigma=SLdz, emp=T)  # emp=T means exact data simulation, cov(Ldz) = SLdz
-      Lmz=MASS::mvrnorm(nmz, rep(0,11), Sigma=SLmz, emp=T)  # emp=T means exact data simulation, cov(Lmz) = SLmz  #
+      Ldz=mvrnorm(ndz, rep(0,11), Sigma=SLdz, emp=T)  # emp=T means exact data simulation, cov(Ldz) = SLdz
+      Lmz=mvrnorm(nmz, rep(0,11), Sigma=SLmz, emp=T)  # emp=T means exact data simulation, cov(Lmz) = SLmz  #
       # build the exact simulated data DZ
       Am_=Ldz[,1]
-      Pm=Ldz[,2] # PGS
+      Pm=Ldz[,2] # prs
       Af_=Ldz[,3]
-      Pf=Ldz[,4] # PGS
+      Pf=Ldz[,4] # prs
       At1r=Ldz[,5]
       Pt1r=Ldz[,6]
       At2r=Ldz[,7]
       Pt2r=Ldz[,8]
       #
       At1_=.5*Am_+.5*Af_+At1r # A res t1
-      Pt1=.5*Pm+.5*Pf+Pt1r # PGS t1
+      Pt1=.5*Pm+.5*Pf+Pt1r # Prs t1
       At2_=.5*Am_+.5*Af_+At2r #t2
       Pt2=.5*Pm+.5*Pf+Pt2r# t2
       C=Ldz[,9]
@@ -155,8 +155,8 @@ gnome_gee_simulation <- function(
       Pht2=par_a*At2 + par_e*E2 + par_c*C +  par_g*(Am+Af) + par_b*(At1)
       Pht1=Pht1 + par_x*Pht2
       Pht2=Pht2 + par_x*Pht1
-      # standardize PGS
-      if (standPGS) {
+      # standardize prs
+      if (stzPRS) {
         Pm=scale(Pm)
         Pf=scale(Pf)
         Pt1=scale(Pt1)
@@ -178,7 +178,7 @@ gnome_gee_simulation <- function(
       Pt2r=Lmz[,6] # MZ MZ MZ MZ MZ Lmz[,8]
       #
       At1_=.5*Am_+.5*Af_+At1r # A res
-      Pt1=.5*Pm+.5*Pf+Pt1r # PGS
+      Pt1=.5*Pm+.5*Pf+Pt1r # Prs
       At2_=At1_ #.5*Am_+.5*Af_+At2r
       Pt2 = Pt1 # MZMZMZMZMZ .5*Pm+.5*Pf+Pt2r #
       C=Lmz[,9]
@@ -195,9 +195,9 @@ gnome_gee_simulation <- function(
       Pht1=Pht1 + par_x*Pht2
       Pht2=Pht2 + par_x*Pht1
       #
-      ## standardize PGS
+      ## standardize prs
       #
-      if (standPGS) {
+      if (stzPRS) {
         Pm=scale(Pm)
         Pf=scale(Pf)
         Pt1=scale(Pt1)
@@ -224,13 +224,13 @@ gnome_gee_simulation <- function(
       phdatdz_e = as.data.frame(exdatdz)
       colnames(phdatmz_e)=colnames(phdatdz_e) =c('pgsm','pgsf','pgst1','pgst2','pht1','pht2')
       #
-      # add sum of mother and father PGS and add mean of twins PGS ... we need these additional variables to
+      # add sum of mother and father prs and add mean of twins prs ... we need these additional variables to
       #                                                                detect cov(AC)
       #
-      addmz_e=cbind((phdatmz_e$pgsm+phdatmz_e$pgsf)/2, (phdatmz_e$pgst1+phdatmz_e$pgst2)/2) # ADDED /2 for parents
+      addmz_e=cbind(phdatmz_e$pgsm+phdatmz_e$pgsf, (phdatmz_e$pgst1+phdatmz_e$pgst2)/2)
       colnames(addmz_e) = c('pgsmf','mpgst')
       phdatmz_e = cbind(phdatmz_e, addmz_e)
-      adddz_e=cbind((phdatdz_e$pgsm+phdatdz_e$pgsf)/2, (phdatdz_e$pgst1+phdatdz_e$pgst2)/2) # ADDED /2 for parents
+      adddz_e=cbind(phdatdz_e$pgsm+phdatdz_e$pgsf, (phdatdz_e$pgst1+phdatdz_e$pgst2)/2)
       colnames(adddz_e) = c('pgsmf','mpgst')
       phdatdz_e = cbind(phdatdz_e, adddz_e)
       # add sum and mean
@@ -283,23 +283,43 @@ gnome_gee_simulation <- function(
       phdatdzL_e=as.data.frame(phdatdzL_e)
       #
       phdatL_e=rbind(phdatmzL_e, phdatdzL_e)
-
+      #
+      #
+      # simulated stochastically
+      #                wide        wide     long      long      long mz+dz
+      # data sets are  phdatdz and phdatdz, phdatdzL, phdatmzL, phdatL
+      #                wide          wide        long       long        long mz+dz
+      # simulated exactly
+      # data sets are  phdatdz_e and phdatdz_e, phdatdzL_e, phdatmzL_e, phdatL_e
+      #              pheno t1 pheno t2 mother    father   twin 1  nt twin1  twin2   nt twin2  m+f prs  mean twin prs
+      # colnames [1] "pht1"   "pht2"   "pgsm"   "pgsf"   "pgst1"  "pgsnt1" "pgst2"  "pgsnt2" "pgsmf"  "mpgst"
+      #
+      # --------------------------------------------------- end data sim
+      # start the analyses
+      #
+      # regression analyses. based on simulated data (not exact) ...
+      #
+      #
+      # regression analyses. based on simulated data exact ... with power
+      # DZ twin 1 only ...
+      #
       eM0dz=lm(pht1~pgst1, data=phdatdz_e) #)$coefficients 			#   just regression of pheno on prs
       eM1dz=lm(pht1~pgsmf+pgst1, data=phdatdz_e) #)$coefficients 		#   with pgsmf ... this is equivalent to the transmitted / non-transmitted design
       eM2dz=lm(pht1~mpgst+pgst1, data=phdatdz_e) #)$coefficients 		#   with mpgst ...
       eM3dz=lm(pht1~pgsmf+mpgst+pgst1, data=phdatdz_e) # )$coefficients 	#   both detects two sources of cov(AC): twin interaction and cult transmission
-
+      #round(summary(eM3dz)$coefficients,5)
+      #
       # DZ twin 1 and twin 2 ... switch to geeglm
       #
       egeeM0dzL=geeglm(ph~pgst, id=famnr, corstr=cmethod,data=phdatdzL_e)#)$coefficients #
       egeeM1dzL=geeglm(ph~pgsmf+pgst, id=famnr, corstr=cmethod,data=phdatdzL_e)#)$coefficients #
       egeeM2dzL=geeglm(ph~mpgst+pgst, id=famnr, corstr=cmethod,data=phdatdzL_e)#)$coefficients  #
       egeeM3dzL=geeglm(ph~pgsmf+mpgst+pgst, id=famnr, corstr=cmethod,data=phdatdzL_e)#)$coefficients  #
-
+      #
       # exact twins mz + dz gee
       # DZ and MZ twins
       egeeM0mzdzL=geeglm(ph~pgst, id=famnr, corstr=cmethod,data=phdatL_e)#)$coefficients #
-      egeeM1mzdzL=geeglm(ph~pgsmf+pgst, id=famnr, corstr=cmethod,data=phdatL_e)#)$coefficients ### ERROR
+      egeeM1mzdzL=geeglm(ph~pgsmf+pgst, id=famnr, corstr=cmethod,data=phdatL_e)#)$coefficients #
       egeeM2mzdzL=geeglm(ph~mpgst+pgst, id=famnr, corstr=cmethod,data=phdatL_e)#)$coefficients  #
       egeeM3mzdzL=geeglm(ph~pgsmf+mpgst+pgst, id=famnr, corstr=cmethod,data=phdatL_e)#)$coefficients  #
 
