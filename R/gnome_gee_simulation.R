@@ -57,6 +57,8 @@ gnome_gee_simulation <- function(
     cmethod = 'independence' # Gee error covariance structure
 ){
 
+  print("The function has been updated")
+
   #Create all possible parameter combinations
   param_combinations <- expand.grid(a = a, c = c, e = e, x = x, ct = ct, si = si)
 
@@ -91,7 +93,7 @@ gnome_gee_simulation <- function(
 
     # Create
     setkeep <- matrix(NA, n_set, 10)   # to keep settings
-    geekeep <- matrix(NA, n_set, 16) # openmx results
+    geekeep <- matrix(NA, n_set, 16) # gee results
 
     # Print number of settings to the user
     print(paste('The factorial design has', n_set, 'setting(s).'))
