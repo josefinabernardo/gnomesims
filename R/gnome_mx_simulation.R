@@ -110,7 +110,6 @@ gnome_mx_simulation <- function(
       print(c(counter_overall))
       #
       setkeep[counter_within,1:10] <- c(nmz, ndz, par_a, par_c, par_e, par_g, par_b, par_x, p_pgs, p_A)
-      print(setkeep)
       #
       VA1=p_A; VP=p_pgs;VC=1; VE=1 # .... VA1+VP = par_as^2
       ##
@@ -611,13 +610,9 @@ gnome_mx_simulation <- function(
     row_index <- counter_overall - n_set + 1
 
     final_mx_estimates[row_index : counter_overall,1:10] <- setkeep[,1:10]
-    print(final_mx_estimates)
     final_mx_estimates[row_index : counter_overall,11:18] <- round(mxkeep[,jest],3)
-    print(final_mx_estimates)
     final_mx_power[row_index : counter_overall,1:10] <- setkeep[,1:10]
-    print(final_mx_power)
     final_mx_power[row_index : counter_overall,11:18] <- round(mxkeep[,jpow],3)
-    print(final_mx_power)
 
     counter_within = 0 # reset set counter for each PGS setting
   }
