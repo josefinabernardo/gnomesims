@@ -57,7 +57,7 @@ gnome_gee_simulation <- function(
     cmethod = 'independence' # Gee error covariance structure
 ){
 
-  print("The function has been updated")
+  print("The function has been updated to use /2 for the parents")
 
   #Create all possible parameter combinations
   param_combinations <- expand.grid(a = a, c = c, e = e, x = x, ct = ct, si = si)
@@ -227,10 +227,10 @@ gnome_gee_simulation <- function(
       # add sum of mother and father PGS and add mean of twins PGS ... we need these additional variables to
       #                                                                detect cov(AC)
       #
-      addmz_e=cbind(phdatmz_e$pgsm+phdatmz_e$pgsf, (phdatmz_e$pgst1+phdatmz_e$pgst2)/2)
+      addmz_e=cbind((phdatmz_e$pgsm+phdatmz_e$pgsf)/2, (phdatmz_e$pgst1+phdatmz_e$pgst2)/2) # ADDED /2 for parents
       colnames(addmz_e) = c('pgsmf','mpgst')
       phdatmz_e = cbind(phdatmz_e, addmz_e)
-      adddz_e=cbind(phdatdz_e$pgsm+phdatdz_e$pgsf, (phdatdz_e$pgst1+phdatdz_e$pgst2)/2)
+      adddz_e=cbind((phdatdz_e$pgsm+phdatdz_e$pgsf)/2, (phdatdz_e$pgst1+phdatdz_e$pgst2)/2) # ADDED /2 for parents
       colnames(adddz_e) = c('pgsmf','mpgst')
       phdatdz_e = cbind(phdatdz_e, adddz_e)
       # add sum and mean
