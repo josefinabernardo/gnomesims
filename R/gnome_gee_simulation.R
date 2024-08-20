@@ -119,8 +119,8 @@ gnome_gee_simulation <- function(
       #                 1   2    3    4   5     6     7      8   9  10   11
       SLmz=SLdz=diag(c(VA1, VP, VA1, VP, VA1/2, VP/2,VA1/2, VP/2,VC, VE, VE))
       #
-      SLmz[5,7]=SLmz[7,5]=VA1/2   # commented in
-      SLmz[6,8]=SLmz[8,6]=VP/2    # commented in
+      #SLmz[5,7]=SLmz[7,5]=VA1/2
+      #SLmz[6,8]=SLmz[8,6]=VP/2
       #
       # simulate the latent variables exactly
       #
@@ -297,13 +297,13 @@ gnome_gee_simulation <- function(
       # exact twins mz + dz gee
       # DZ and MZ twins
       egeeM0mzdzL=geeglm(ph~pgst, id=famnr, corstr=cmethod,data=phdatL_e)#)$coefficients #
-      egeeM1mzdzL=geeglm(ph~pgsmf+pgst, id=famnr, corstr=cmethod,data=phdatL_e)#)$coefficients #
+      egeeM1mzdzL=geeglm(ph~pgsmf+pgst, id=famnr, corstr=cmethod,data=phdatL_e)#)$coefficients ### ERROR
       egeeM2mzdzL=geeglm(ph~mpgst+pgst, id=famnr, corstr=cmethod,data=phdatL_e)#)$coefficients  #
       egeeM3mzdzL=geeglm(ph~pgsmf+mpgst+pgst, id=famnr, corstr=cmethod,data=phdatL_e)#)$coefficients  #
 
       # Power
       test_tmp <- c(
-        summary(egeeM1mzdzL)$coefficients[2,3],
+        summary(egeeM1mzdzL)$coefficients[2,3], ### ERROR
         summary(egeeM2mzdzL)$coefficients[2,3],
         summary(egeeM3mzdzL)$coefficients[2,3],
         summary(egeeM3mzdzL)$coefficients[3,3],
