@@ -18,14 +18,15 @@ knitr::opts_chunk$set(
 
 ## Setup
 
-You can install `gnomesims` from its' Github repository using `devtools`.
+The package can be installed from its' Github repository using `devtools`.
 
 ```{r warning=FALSE, results = "hide", message = FALSE}
 # install.packages("devtools")
+library(devtools)
 devtools::install_github("josefinabernardo/gnomesims")
 ```
 
-Next, you can load it into you current session.
+Next, it should be loaded it into you current session.
 
 ```{r setup}
 library(gnomesims)
@@ -43,6 +44,15 @@ gnome_mx_simulation(ct = .01, si = .025, npgsloci = 10)
 Embedded within the simulation is the function `gnome_power()` to calculate power from alpha, degrees of freedom and the non-centrality parameter.
 
 We recognize that the path coefficients are difficult to interpret. To solve this issue, the function `gnome_effect()` calculates a readily interpretable effect size measure.
+
+## Running a simulation using generalized estimating equations
+
+The package can also simulate results using generalized estimating equations (gee) with the `gnome_gee_simulation()` function. Functionality and results are similar to those of the `gnome_mx_simulation()` function.
+
+```{r}
+gnome_gee_simulation(ct = .01, si = .025, npgsloci = 10)
+```
+
 
 ## In-built data sets
 

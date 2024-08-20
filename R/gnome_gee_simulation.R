@@ -1,3 +1,6 @@
+# Ignore warnings for variables without global binding
+utils::globalVariables(c("famnr", "g", "b"))
+
 # Define defaults outside of function
 default_a <- sqrt(c(.4))
 default_c <- sqrt(c(.3))
