@@ -259,15 +259,15 @@ gnome_gee_simulation <- function(
       phdatmzL_e[,7]=c(phdatmz_e$pgsmf,phdatmz_e$pgsmf)
       phdatmzL_e[,8]=c(phdatmz_e$mpgst,phdatmz_e$mpgst)
       #
-      #ix_ = sort.int(phdatmzL_e[,2], index.return=T)
-      #phdatmzL_e = phdatmzL_e[ix_$ix,]
+      ix_ = sort.int(phdatmzL_e[,2], index.return=T)
+      phdatmzL_e = phdatmzL_e[ix_$ix,]
       colnames(phdatmzL_e)=c("zyg","famnr","ph","pgsm","pgsf","pgst","pgsmf","mpgst")
       phdatmzL_e=as.data.frame(phdatmzL_e)
       #
       #
       # Long format exact simulated data
       #
-      phdatdzL_e = matrix(2,ndz*2,8)
+      phdatdzL_e = matrix(1,ndz*2,8)
       phdatdzL_e[,2]=c(c(1:ndz),c(1:ndz))
       phdatdzL_e[,3]=c(phdatdz_e$pht1,phdatdz_e$pht2)
       phdatdzL_e[,4]=c(phdatdz_e$pgsm,phdatdz_e$pgsm)
@@ -276,8 +276,8 @@ gnome_gee_simulation <- function(
       phdatdzL_e[,7]=c(phdatdz_e$pgsmf,phdatdz_e$pgsmf)
       phdatdzL_e[,8]=c(phdatdz_e$mpgst,phdatdz_e$mpgst)
       #
-      #ix_ = sort.int(phdatdzL_e[,2], index.return=T)
-      #phdatdzL_e = phdatdzL_e[ix_$ix,]
+      ix_ = sort.int(phdatdzL_e[,2], index.return=T)
+      phdatdzL_e = phdatdzL_e[ix_$ix,]
       colnames(phdatdzL_e)=c("zyg","famnr","ph","pgsm","pgsf","pgst","pgsmf","mpgst")
       phdatdzL_e=as.data.frame(phdatdzL_e)
       #
