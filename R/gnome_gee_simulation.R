@@ -156,7 +156,7 @@ gnome_gee_simulation <- function(
       Pht1=Pht1 + par_x*Pht2
       Pht2=Pht2 + par_x*Pht1
       # standardize prs
-      if (stzPRS) {
+      if (standPGS) {
         Pm=scale(Pm)
         Pf=scale(Pf)
         Pt1=scale(Pt1)
@@ -197,7 +197,7 @@ gnome_gee_simulation <- function(
       #
       ## standardize prs
       #
-      if (stzPRS) {
+      if (standPGS) {
         Pm=scale(Pm)
         Pf=scale(Pf)
         Pt1=scale(Pt1)
