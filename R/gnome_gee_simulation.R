@@ -196,7 +196,6 @@ gnome_gee_simulation <- function(
       Pht2=Pht2 + par_x*Pht1
       #
       ## standardize prs
-      #
       if (standPGS) {
         Pm=scale(Pm)
         Pf=scale(Pf)
