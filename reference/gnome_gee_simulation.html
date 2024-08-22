@@ -133,15 +133,22 @@
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">gnome_gee_simulation</span><span class="op">(</span>ct <span class="op">=</span> <span class="fl">.01</span>, si <span class="op">=</span> <span class="fl">.025</span>, npgsloci <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Updated via copy-paste"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Debugging with print statements and updating long format section."</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Running simulation proportion of genetic variance explained by the PGS is: 0.1 ."</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "The factorial design has 1 setting(s)."</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   zyg famnr         ph        pgsm        pgsf       pgst      pgsmf      mpgst</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   1  4001  0.2448585 -0.20207738  0.63473472  0.4154231  0.4326573  0.4154231</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   1  4002  0.2967858  0.21154643 -0.07770624  0.1394409  0.1338402  0.1394409</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3   1  4003 -0.2604652 -0.28702187  0.12666813  0.2463792 -0.1603537  0.2463792</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4   1  4004 -1.0159745 -0.31382819  0.11550503 -0.1289492 -0.1983232 -0.1289492</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5   1  4005  1.9120662 -0.05399899 -0.28860146 -0.4036427 -0.3426004 -0.4036427</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6   1  4006  0.2724896  0.42815170  0.64543242  0.4591334  1.0735841  0.4591334</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $power</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    nmz  ndz         a         c         e    g     b x PGS   A    p1    p2   p3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 4000 4000 0.6324555 0.5477226 0.5477226 0.01 0.025 0 0.1 0.9 0.084 0.185 0.06</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      p4   p5   p6    p7    p8        Smz       Sdz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.108 0.09 0.15 0.054 0.079 0.04559689 0.0297855</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    nmz  ndz         a         c         e    g     b x PGS   A    p1    p2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 4000 4000 0.6324555 0.5477226 0.5477226 0.01 0.025 0 0.1 0.9 0.101 0.133</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      p3    p4    p5    p6    p7   p8        Smz       Sdz</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.066 0.096 0.102 0.125 0.056 0.08 0.04559689 0.0297855</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $params</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    nmz  ndz         a         c         e    g     b x PGS   A    e1    e2   e3</span>
