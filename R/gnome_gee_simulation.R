@@ -57,7 +57,7 @@ gnome_gee_simulation <- function(
     cmethod = 'independence' # Gee error covariance structure
 ){
 
-  print("Updated via copy-paste")
+  print("Debugging with print statements and updating long format section.")
 
   #Create all possible parameter combinations
   param_combinations <- expand.grid(a = a, c = c, e = e, x = x, ct = ct, si = si)
@@ -248,41 +248,25 @@ gnome_gee_simulation <- function(
       #
       # Organize data in long format simulated data long format or vertical format
       #
+      # Long format exact simulated data - MZ data
+      phdatmzL_e <- data.frame(
+        zyg = as.factor(rep(1, 2*nmz)), famnr = as.factor(nmz + rep(1:nmz, 2)),
+        ph = c(phdatmz_e$pht1,phdatmz_e$pht2), pgsm = rep(phdatmz_e$pgsm, 2),
+        pgsf = rep(phdatmz_e$pgsf, 2), pgst = c(phdatmz_e$pgst1,phdatmz_e$pgst2),
+        pgsmf = rep(phdatmz_e$pgsmf, 2), mpgst = rep(phdatmz_e$mpgst, 2)
+      )
       #
-      # Long format exact simulated data
-      phdatmzL_e = matrix(1,nmz*2,8)
-      phdatmzL_e[,2]=nmz + c(c(1:nmz),c(1:nmz))
-      phdatmzL_e[,3]=c(phdatmz_e$pht1,phdatmz_e$pht2)
-      phdatmzL_e[,4]=c(phdatmz_e$pgsm,phdatmz_e$pgsm)
-      phdatmzL_e[,5]=c(phdatmz_e$pgsf,phdatmz_e$pgsf)
-      phdatmzL_e[,6]=c(phdatmz_e$pgst1,phdatmz_e$pgst2)
-      phdatmzL_e[,7]=c(phdatmz_e$pgsmf,phdatmz_e$pgsmf)
-      phdatmzL_e[,8]=c(phdatmz_e$mpgst,phdatmz_e$mpgst)
-      #
-      ix_ = sort.int(phdatmzL_e[,2], index.return=T)
-      phdatmzL_e = phdatmzL_e[ix_$ix,]
-      colnames(phdatmzL_e)=c("zyg","famnr","ph","pgsm","pgsf","pgst","pgsmf","mpgst")
-      phdatmzL_e=as.data.frame(phdatmzL_e)
-      #
-      #
-      # Long format exact simulated data
-      #
-      phdatdzL_e = matrix(1,ndz*2,8)
-      phdatdzL_e[,2]=c(c(1:ndz),c(1:ndz))
-      phdatdzL_e[,3]=c(phdatdz_e$pht1,phdatdz_e$pht2)
-      phdatdzL_e[,4]=c(phdatdz_e$pgsm,phdatdz_e$pgsm)
-      phdatdzL_e[,5]=c(phdatdz_e$pgsf,phdatdz_e$pgsf)
-      phdatdzL_e[,6]=c(phdatdz_e$pgst1,phdatdz_e$pgst2)
-      phdatdzL_e[,7]=c(phdatdz_e$pgsmf,phdatdz_e$pgsmf)
-      phdatdzL_e[,8]=c(phdatdz_e$mpgst,phdatdz_e$mpgst)
-      #
-      ix_ = sort.int(phdatdzL_e[,2], index.return=T)
-      phdatdzL_e = phdatdzL_e[ix_$ix,]
-      colnames(phdatdzL_e)=c("zyg","famnr","ph","pgsm","pgsf","pgst","pgsmf","mpgst")
-      phdatdzL_e=as.data.frame(phdatdzL_e)
+      # Long format exact simulated data - DZ data
+      phdatdzL_e <- data.frame(
+        zyg = as.factor(rep(2, 2*ndz)), famnr = as.factor(rep(1:ndz, 2)),
+        ph = c(phdatdz_e$pht1,phdatdz_e$pht2), pgsm = rep(phdatdz_e$pgsm, 2),
+        pgsf = rep(phdatdz_e$pgsf, 2), pgst = c(phdatdz_e$pgst1,phdatdz_e$pgst2),
+        pgsmf = rep(phdatdz_e$pgsmf, 2), mpgst = rep(phdatdz_e$mpgst, 2)
+      )
       #
       phdatL_e=rbind(phdatmzL_e, phdatdzL_e)
       #
+      print(head(phdatL_e))
       #
       # simulated stochastically
       #                wide        wide     long      long      long mz+dz
@@ -297,16 +281,6 @@ gnome_gee_simulation <- function(
       # start the analyses
       #
       # regression analyses. based on simulated data (not exact) ...
-      #
-      #
-      # regression analyses. based on simulated data exact ... with power
-      # DZ twin 1 only ...
-      #
-      eM0dz=lm(pht1~pgst1, data=phdatdz_e) #)$coefficients 			#   just regression of pheno on prs
-      eM1dz=lm(pht1~pgsmf+pgst1, data=phdatdz_e) #)$coefficients 		#   with pgsmf ... this is equivalent to the transmitted / non-transmitted design
-      eM2dz=lm(pht1~mpgst+pgst1, data=phdatdz_e) #)$coefficients 		#   with mpgst ...
-      eM3dz=lm(pht1~pgsmf+mpgst+pgst1, data=phdatdz_e) # )$coefficients 	#   both detects two sources of cov(AC): twin interaction and cult transmission
-      #round(summary(eM3dz)$coefficients,5)
       #
       # DZ twin 1 and twin 2 ... switch to geeglm
       #
@@ -324,7 +298,7 @@ gnome_gee_simulation <- function(
 
       # Power
       test_tmp <- c(
-        summary(egeeM1mzdzL)$coefficients[2,3], ### ERROR
+        summary(egeeM1mzdzL)$coefficients[2,3],
         summary(egeeM2mzdzL)$coefficients[2,3],
         summary(egeeM3mzdzL)$coefficients[2,3],
         summary(egeeM3mzdzL)$coefficients[3,3],
