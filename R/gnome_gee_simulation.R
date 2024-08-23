@@ -57,7 +57,7 @@ gnome_gee_simulation <- function(
     cmethod = 'independence' # Gee error covariance structure
 ){
 
-  print("Debugging the ix part.")
+  print("Debugging and creating new plots.")
 
   #Create all possible parameter combinations
   param_combinations <- expand.grid(a = a, c = c, e = e, x = x, ct = ct, si = si)
