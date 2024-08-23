@@ -57,7 +57,7 @@ gnome_gee_simulation <- function(
     cmethod = 'independence' # Gee error covariance structure
 ){
 
-  print("Debugging with print statements and updating long format section.")
+  print("Debugging the ix part.")
 
   #Create all possible parameter combinations
   param_combinations <- expand.grid(a = a, c = c, e = e, x = x, ct = ct, si = si)
@@ -255,6 +255,8 @@ gnome_gee_simulation <- function(
         pgsf = rep(phdatmz_e$pgsf, 2), pgst = c(phdatmz_e$pgst1,phdatmz_e$pgst2),
         pgsmf = rep(phdatmz_e$pgsmf, 2), mpgst = rep(phdatmz_e$mpgst, 2)
       )
+      ix_ = sort.int(phdatmzL_e[,2], index.return=T)
+      phdatmzL_e = phdatmzL_e[ix_$ix,]
       #
       # Long format exact simulated data - DZ data
       phdatdzL_e <- data.frame(
@@ -264,9 +266,10 @@ gnome_gee_simulation <- function(
         pgsmf = rep(phdatdz_e$pgsmf, 2), mpgst = rep(phdatdz_e$mpgst, 2)
       )
       #
+      ix_ = sort.int(phdatdzL_e[,2], index.return=T)
+      phdatdzL_e = phdatdzL_e[ix_$ix,]
+
       phdatL_e=rbind(phdatmzL_e, phdatdzL_e)
-      #
-      print(head(phdatL_e))
       #
       # simulated stochastically
       #                wide        wide     long      long      long mz+dz
