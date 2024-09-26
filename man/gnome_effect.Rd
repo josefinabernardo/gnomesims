@@ -4,18 +4,24 @@
 \alias{gnome_effect}
 \title{Effect Size Function}
 \usage{
-gnome_effect(a, c, e, g, b)
+gnome_effect(a, c, e, g, b, varA = 1, varC = 1, varE = 1)
 }
 \arguments{
-\item{a}{Additive genetic variance}
+\item{a}{Additive genetic path coefficient}
 
-\item{c}{Shared environment variance}
+\item{c}{Shared environment path coefficient}
 
-\item{e}{Non-shared environmental variance}
+\item{e}{Non-shared environmental path coefficient}
 
-\item{g}{Variance due to cultural transmission}
+\item{g}{Path coefficient cultural transmission}
 
-\item{b}{Variance due to sibling interaction}
+\item{b}{Path coefficient sibling interaction}
+
+\item{varA}{Additive genetic variance}
+
+\item{varC}{Shared environment variance}
+
+\item{varE}{Non-shared environmental variance}
 }
 \value{
 Proportion of variance increase

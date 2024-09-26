@@ -2,11 +2,14 @@
 #'
 #' Function to calculate variance increase due to AC covariance
 #'
-#' @param a Additive genetic variance
-#' @param c Shared environment variance
-#' @param e Non-shared environmental variance
-#' @param g Variance due to cultural transmission
-#' @param b Variance due to sibling interaction
+#' @param a Additive genetic path coefficient
+#' @param c Shared environment path coefficient
+#' @param e Non-shared environmental path coefficient
+#' @param g Path coefficient cultural transmission
+#' @param b Path coefficient sibling interaction
+#' @param varA Additive genetic variance
+#' @param varC Shared environment variance
+#' @param varE Non-shared environmental variance
 #'
 #' @return Proportion of variance increase
 #' @export
@@ -16,15 +19,16 @@
 #' gnome_effect(a = sqrt(.4), c = sqrt(.3), e = sqrt(.3), g = sqrt(.05), b = 0)
 #' gnome_effect(a = sqrt(.4), c = sqrt(.3), e = sqrt(.3), g = sqrt(.05), b = sqrt(.05))
 
-gnome_effect <- function(a, c, e, g, b) {
+gnome_effect <- function(a, c, e, g, b, varA = 1, varC = 1, varE = 1) {
 
   # Phenotypic covariances for MZ and DZ
-  smz = 2 * (g + a/2 + b/2)**2 + (a/2 + b/2) * a + (a/2 + b/2) * b + c**2 + e**2
-  sdz = 2 * (g + a/2 + b/2)**2 + a**2/2 + b**2/2 + c**2 + e**2
+  smz = 2 * (g + a/2 + b/2)**2*varA + (a*varA/2 + b*varA/2) * a + (a*varA/2 + b*varA/2) * b + c**2*varC + e**2
+  sdz = 2 * (g + a/2 + b/2)**2*varA + a**2*varA/2 + b**2*varA/2 + c**2*varC + e**2*varE
 
   # Variance Increase
-  effect_mz <- smz - 1
-  effect_dz <- sdz - 1
+  varPh_noAC <- a**2*varA + c**2*varC + e**2*varE
+  effect_mz <- (smz - varPh_noAC) / varPh_noAC
+  effect_dz <- (sdz - varPh_noAC) / varPh_noAC
 
   effect = list(mz = effect_mz, dz = effect_dz)
   return(effect)
