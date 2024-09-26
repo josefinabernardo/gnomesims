@@ -1,6 +1,6 @@
 #' Effect Size Function
 #'
-#' Function to calculate variance increase due to AC covariance
+#' Function to calculate proportion of phenotypic variance increase due to AC covariance
 #'
 #' @param a Additive genetic path coefficient
 #' @param c Shared environment path coefficient
@@ -11,14 +11,12 @@
 #' @param varC Shared environment variance
 #' @param varE Non-shared environmental variance
 #'
-#' @return Proportion of variance increase
-#' @export
-#'
+#' @return Proportion of phenotypic variance increase due to AC covariance
 #' @examples
 #' gnome_effect(a = sqrt(.4), c = sqrt(.3), e = sqrt(.3), g = 0, b = sqrt(.05))
 #' gnome_effect(a = sqrt(.4), c = sqrt(.3), e = sqrt(.3), g = sqrt(.05), b = 0)
 #' gnome_effect(a = sqrt(.4), c = sqrt(.3), e = sqrt(.3), g = sqrt(.05), b = sqrt(.05))
-
+#' @export
 gnome_effect <- function(a, c, e, g, b, varA = 1, varC = 1, varE = 1) {
 
   # Phenotypic covariances for MZ and DZ
