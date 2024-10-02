@@ -324,7 +324,7 @@ gnome_mx_simulation <- function(
       #
       RAdz=matrix(c(.5),4,4)
       diag(RAdz)=1
-      RAdz[3,4]=RAdz[4,3]=par_assortm  # m f assortative mating
+      ifelse(assortm_logical, RAdz[3,4] <- RAdz[4,3] <- 0, RAdz[3,4] <- RAdz[4,3] <- par_assortm)# m f assortative mating
       RAmz=RAdz
       RAmz[1,2]=RAmz[2,1]=1 # MZ twins
       RAfree=matrix(FALSE,4,4)
