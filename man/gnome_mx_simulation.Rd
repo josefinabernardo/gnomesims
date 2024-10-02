@@ -17,7 +17,8 @@ gnome_mx_simulation(
   si = default_si,
   x = default_x,
   nloci = 100,
-  npgsloci = c(2, 5, 10, 15)
+  npgsloci = c(2, 5, 10, 15),
+  assortm = 0
 )
 }
 \arguments{
@@ -46,6 +47,8 @@ gnome_mx_simulation(
 \item{nloci}{Number of diallelic loci}
 
 \item{npgsloci}{Number of loci comprising the PGS}
+
+\item{assortm}{Assortative mating - genetic correlation between the parents}
 }
 \value{
 List with data frame of power estimates and data frame of parameter estimates
