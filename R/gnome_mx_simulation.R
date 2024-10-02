@@ -35,6 +35,7 @@ default_x <- 0
 #' @param x Sibling Interaction at the phenotypic level
 #' @param nloci Number of diallelic loci
 #' @param npgsloci Number of loci comprising the PGS
+#' @param assortm Assortative mating - genetic correlation between the parents
 #'
 #' @return List with data frame of power estimates and data frame of parameter estimates
 #' @export
@@ -54,11 +55,16 @@ gnome_mx_simulation <- function(
     si = default_si, # Sibling Interaction - Sibling 1 genotype to sibling 2 phenotype
     x = default_x, # Sibling interaction at the phenotypic level
     nloci = 100, # Number of diallelic loci
-    npgsloci = c(2, 5, 10, 15) # Number of loci comprising the PGS
+    npgsloci = c(2, 5, 10, 15), # Number of loci comprising the PGS
+    assortm = 0 # Assortative mating - genetic correlation
 ){
+  # Logical for assortative mating
+  assortm_logical = all(assortm == 0)
 
-  #Create all possible parameter combinations
-  param_combinations <- expand.grid(a = a, c = c, e = e, x = x, ct = ct, si = si)
+  # Create all possible parameter combinations
+  ifelse(assortm_logical,
+         param_combinations <- expand.grid(a = a, c = c, e = e, x = x, ct = ct, si = si),
+         param_combinations <- expand.grid(a = a, c = c, e = e, x = x, ct = ct, si = si, assortm = assortm))
 
   # Number of settings we iterate through
   n_set <- nrow(param_combinations)
@@ -71,11 +77,14 @@ gnome_mx_simulation <- function(
   counter_overall <- 0 # counts sets overall
 
   # Determine number of rows for data frames
+  ifelse(assortm_logical,
+         n_cols <- 18,
+         n_cols <- 19)
   n_rows <- n_set * length(global_ppgs)
 
   # Pre-allocate data frames with the appropriate dimensions
-  final_mx_estimates <- data.frame(matrix(NA, nrow = n_rows, ncol = 18))
-  final_mx_power <- data.frame(matrix(NA, nrow = n_rows, ncol = 18))
+  final_mx_estimates <- data.frame(matrix(NA, nrow = n_rows, ncol = n_cols))
+  final_mx_power <- data.frame(matrix(NA, nrow = n_rows, ncol = n_cols))
 
   for (ngp_i in seq_along(npgsloci)) {
 
@@ -84,13 +93,15 @@ gnome_mx_simulation <- function(
 
     print(paste('Running simulation proportion of genetic variance explained by the PGS is:', p_pgs, "."))
 
-    p_A <- 1-p_pgs # not explained = A without pgs effect
+    p_A <- 1 - p_pgs # not explained = A without pgs effect
     # e.g., if par_as^2 = .4, then this A variance is due to ng genes
     #                         of .4*(npg/ng) is due to the PGS
     #                         Given var(PH) = 1 (assuming no covAC), the PGS explained {.4*(npg/ng)}/1 of the phenotypic variance
 
     # Create
-    setkeep <- matrix(NA, n_set, 10)   # to keep settings
+    ifelse(assortm_logical,
+          setkeep <- matrix(NA, n_set, 10),   # to keep settings
+          setkeep <- matrix(NA, n_set, 11))
     mxkeep <- matrix(NA, n_set, 16) # openmx results
 
     # Print number of settings to the user
@@ -103,13 +114,19 @@ gnome_mx_simulation <- function(
       par_x <- param_combinations$x[i]
       par_g <- param_combinations$ct[i]
       par_b <- param_combinations$si[i]
+      if(assortm_logical){
+        par_assortm <- param_combinations$assortm[i]
+      }
 
       counter_within <- counter_within + 1 # count sets in factorial design
       counter_overall <- counter_overall + 1 # count sets overall
       #
       print(c(counter_overall))
       #
-      setkeep[counter_within,1:10] <- c(nmz, ndz, par_a, par_c, par_e, par_g, par_b, par_x, p_pgs, p_A)
+      ifelse(assortm_logical,
+            setkeep[counter_within,1:10] <- c(nmz, ndz, par_a, par_c, par_e, par_g, par_b, par_x, p_pgs, p_A),
+            setkeep[counter_within,1:11] <- c(nmz, ndz, par_a, par_c, par_e, par_g, par_b, par_x, p_pgs, p_A, par_assortm))
+
       #
       VA1=p_A; VP=p_pgs;VC=1; VE=1 # .... VA1+VP = par_as^2
       ##
@@ -307,7 +324,7 @@ gnome_mx_simulation <- function(
       #
       RAdz=matrix(c(.5),4,4)
       diag(RAdz)=1
-      RAdz[3,4]=RAdz[4,3]=0  # m f assortative mating
+      RAdz[3,4]=RAdz[4,3]=par_assortm  # m f assortative mating
       RAmz=RAdz
       RAmz[1,2]=RAmz[2,1]=1 # MZ twins
       RAfree=matrix(FALSE,4,4)
@@ -617,7 +634,9 @@ gnome_mx_simulation <- function(
     counter_within = 0 # reset set counter for each PGS setting
   }
   # Re-name columns
-  setnames <- c('nmz','ndz','a','c','e','g','b','x','PGS','A')
+  ifelse(assortm_logical,
+         setnames <- c('nmz','ndz','a','c','e','g','b','x','PGS','A'),
+         setnames <- c('nmz','ndz','a','c','e','g','b','x','PGS','A','assortm'))
   colnames(final_mx_estimates) <- c(setnames, paste0("e", 1:8))
   colnames(final_mx_power) <- c(setnames, paste0("p", 1:8))
 
