@@ -11,6 +11,7 @@ default_e <- sqrt(c(.3))
 default_ct <- sqrt(c(0, .0025, .01))
 default_si <- sqrt(c(0, .0025, .01))
 default_x <- 0
+default_assortm <- 0
 
 #' OpenMx Simulation Function
 #'
@@ -56,7 +57,7 @@ gnome_mx_simulation <- function(
     x = default_x, # Sibling interaction at the phenotypic level
     nloci = 100, # Number of diallelic loci
     npgsloci = c(2, 5, 10, 15), # Number of loci comprising the PGS
-    assortm = 0 # Assortative mating - genetic correlation
+    assortm = default_assortm # Assortative mating - genetic correlation
 ){
   # Logical for assortative mating
   assortm_logical = all(assortm == 0)
