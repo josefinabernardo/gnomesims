@@ -115,7 +115,7 @@ gnome_mx_simulation <- function(
       par_x <- param_combinations$x[i]
       par_g <- param_combinations$ct[i]
       par_b <- param_combinations$si[i]
-      if(assortm_logical){
+      if(assortm_logical == FALSE) {
         par_assortm <- param_combinations$assortm[i]
       }
 
