@@ -18,7 +18,7 @@ gnome_mx_simulation(
   x = default_x,
   nloci = 100,
   npgsloci = c(2, 5, 10, 15),
-  assortm = 0
+  assortm = default_assortm
 )
 }
 \arguments{
