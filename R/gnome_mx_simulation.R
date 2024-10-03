@@ -137,8 +137,15 @@ gnome_mx_simulation <- function(
       #                 1   2    3    4   5     6     7      8   9  10   11
       SLmz=SLdz=diag(c(VA1, VP, VA1, VP, VA1/2, VP/2,VA1/2, VP/2,VC, VE, VE))
       #
-      SLmz[5,7]=SLmz[7,5]=VA1/2   # commented in
-      SLmz[6,8]=SLmz[8,6]=VP/2    # commented in
+      SLmz[5,7]=SLmz[7,5]=VA1/2
+      SLmz[6,8]=SLmz[8,6]=VP/2
+
+      # Assortative mating
+      if(assortm_logical == FALSE) {
+        SLmz[1,3]=SLmz[3,1]=SLdz[1,3]=SLdz[3,1]=par_assortm*sqrt(SLmz[1,1]*SLmz[3,3])
+        SLmz[2,4]=SLmz[4,2]=SLdz[2,4]=SLdz[4,2]=par_assortm*sqrt(SLmz[2,2]*SLmz[4,4])
+      }
+
       #
       # simulate the latent variables exactly
       #
@@ -325,7 +332,7 @@ gnome_mx_simulation <- function(
       #
       RAdz=matrix(c(.5),4,4)
       diag(RAdz)=1
-      ifelse(assortm_logical, RAdz[3,4] <- RAdz[4,3] <- 0, RAdz[3,4] <- RAdz[4,3] <- par_assortm)# m f assortative mating
+      RAdz[3,4] <- RAdz[4,3] <- 0# m f assortative mating
       RAmz=RAdz
       RAmz[1,2]=RAmz[2,1]=1 # MZ twins
       RAfree=matrix(FALSE,4,4)
