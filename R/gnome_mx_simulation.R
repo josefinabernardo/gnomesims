@@ -627,10 +627,19 @@ gnome_mx_simulation <- function(
 
     row_index <- counter_overall - n_set + 1
 
-    final_mx_estimates[row_index : counter_overall,1:10] <- setkeep[,1:10]
-    final_mx_estimates[row_index : counter_overall,11:18] <- round(mxkeep[,jest],3)
-    final_mx_power[row_index : counter_overall,1:10] <- setkeep[,1:10]
-    final_mx_power[row_index : counter_overall,11:18] <- round(mxkeep[,jpow],3)
+    if (assortm_logical == TRUE) {
+      # Execute these lines when assortm_logical is TRUE
+      final_mx_estimates[row_index : counter_overall, 1:10] <- setkeep[, 1:10]
+      final_mx_power[row_index : counter_overall, 1:10] <- setkeep[, 1:10]
+      final_mx_estimates[row_index : counter_overall, 11:18] <- round(mxkeep[, jest], 3)
+      final_mx_power[row_index : counter_overall, 11:18] <- round(mxkeep[, jpow], 3)
+    } else {
+      # Execute these lines when assortm_logical is FALSE
+      final_mx_estimates[row_index : counter_overall, 1:11] <- setkeep[, 1:11]
+      final_mx_power[row_index : counter_overall, 1:11] <- setkeep[, 1:11]
+      final_mx_estimates[row_index : counter_overall, 12:19] <- round(mxkeep[, jest], 3)
+      final_mx_power[row_index : counter_overall, 12:19] <- round(mxkeep[, jpow], 3)
+    }
 
     counter_within = 0 # reset set counter for each PGS setting
   }
