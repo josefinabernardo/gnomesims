@@ -54,11 +54,8 @@ gnome_gee_simulation <- function(
     x = default_x, # Sibling interaction at the phenotypic level
     nloci = 100, # Number of diallelic loci
     npgsloci = c(2, 5, 10, 15), # Number of loci comprising the PGS
-    cmethod = 'independence' # Gee error covariance structure
+    cmethod = 'exchangeable' # Gee error covariance structure
 ){
-
-  print("Debugging and creating new plots.")
-
   #Create all possible parameter combinations
   param_combinations <- expand.grid(a = a, c = c, e = e, x = x, ct = ct, si = si)
 
