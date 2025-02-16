@@ -1,9 +1,6 @@
 ---
 title: "How to use gnomesims"
-output:
-  github_document: default
-  rmarkdown::html_vignette:
-    keep_md: TRUE
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{How to use gnomesims}
   %\VignetteEngine{knitr::rmarkdown}
