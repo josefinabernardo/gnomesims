@@ -1,13 +1,13 @@
 ---
 title: "How to use gnomesims"
 output:
+  github_document: default
   rmarkdown::html_vignette:
     keep_md: TRUE
-  github_document: default
 vignette: >
   %\VignetteIndexEntry{How to use gnomesims}
-  %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 ## Purpose
 
