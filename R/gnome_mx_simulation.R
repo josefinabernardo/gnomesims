@@ -339,7 +339,7 @@ gnome_mx_simulation <- function(
       RAfree=matrix(FALSE,4,4)
       RAlabels=matrix(NA,4,4)
       #
-      M1 <- mxModel("M1",
+      M1 <- OpenMx::mxModel("M1",
                     mxMatrix(type='Full', nrow=5, ncol=6, free=FALSE, values=Filter, labels=c(NA), name='Filter'),
                     # mean
                     mxMatrix(type="Full", nrow=1, ncol=6,
@@ -410,13 +410,13 @@ gnome_mx_simulation <- function(
                     #
       )
 
-      DZ <-  mxModel('DZ',
+      DZ <-  OpenMx::mxModel('DZ',
                      mxData( observed=w_dzdat, type="raw"),
                      mxExpectationNormal( covariance="M1.Sdz", means="M1.expMeandz",
                                           dimnames=vnamesdz),  # the fit function
                      mxFitFunctionML()
       )
-      MZ <-  mxModel('MZ',
+      MZ <-  OpenMx::mxModel('MZ',
                      mxData( observed=w_mzdat, type="raw"),
                      mxExpectationNormal( covariance="M1.Smz", means="M1.expMeanmz",
                                           dimnames=vnamesmz),  # the fit function
@@ -424,7 +424,7 @@ gnome_mx_simulation <- function(
       )
 
       #
-      Model_1 <-  mxModel("MZDZModel", M1, MZ, DZ,
+      Model_1 <-  OpenMx::mxModel("MZDZModel", M1, MZ, DZ,
                           mxFitFunctionMultigroup( c("MZ","DZ"))
       )
       #
@@ -462,7 +462,7 @@ gnome_mx_simulation <- function(
       # [1] "pgsm"  "pgsf"  "pgst1" "pgst2" "pht1"  "pht2"  "pgsmf" "mpgst"
 
       # a model the data, the fit function (MZ)
-      MZmodel <- mxModel("MZ",
+      MZmodel <- OpenMx::mxModel("MZ",
                          #
                          # Matrix expMean for expected mean vector for MZ and DZ twins
                          mxMatrix(type="Full", nrow=1, ncol=4, free=FALSE, labels=c("data.pgst1","data.pgst2","data.pgsm","data.pgsf"), name="pred"),
@@ -480,7 +480,7 @@ gnome_mx_simulation <- function(
                          mxFitFunctionML()
       )
       # a model the data, the fit function (DZ)
-      DZmodel <- mxModel("DZ",
+      DZmodel <- OpenMx::mxModel("DZ",
                          #
                          # Matrix expMean for expected mean vector for MZ and DZ twins
                          mxMatrix(type="Full", nrow=1, ncol=4, free=FALSE, labels=c("data.pgst1","data.pgst2","data.pgsm","data.pgsf"), name="pred"),
@@ -505,7 +505,7 @@ gnome_mx_simulation <- function(
       # [1] "pht1"   "pht2"   "pgsm"   "pgsf"   "pgst1"  "pgsnt1" "pgst2"  "pgsnt2" "pgsmf"  "mpgst"
       # [1] "pgsm"  "pgsf"  "pgst1" "pgst2" "pht1"  "pht2"  "pgsmf" "mpgst"
       # a model the data, the fit function (MZ)
-      MZmodel <- mxModel("MZ",
+      MZmodel <- OpenMx::mxModel("MZ",
                          #
                          # Matrix expMean for expected mean vector for MZ and DZ twins
                          mxMatrix(type="Full", nrow=1, ncol=4, free=FALSE, labels=c("data.pgst1","data.pgst2","data.pgsm","data.pgsf"), name="pred"),
@@ -523,7 +523,7 @@ gnome_mx_simulation <- function(
                          mxFitFunctionML()
       )
       # a model the data, the fit function (DZ)
-      DZmodel=mxModel("DZ",
+      DZmodel=OpenMx::mxModel("DZ",
                       #
                       # Matrix expMean for expected mean vector for MZ and DZ twins
                       mxMatrix(type="Full", nrow=1, ncol=4, free=FALSE, labels=c("data.pgst1","data.pgst2","data.pgsm","data.pgsf"), name="pred"),
@@ -549,7 +549,7 @@ gnome_mx_simulation <- function(
       # [1] "pgsm"  "pgsf"  "pgst1" "pgst2" "pht1"  "pht2"  "pgsmf" "mpgst"
       nphen1 <- 1
       nphen2 <- 2
-      DZModel  <-  mxModel("DZonly",
+      DZModel  <-  OpenMx::mxModel("DZonly",
                            #
                            # Matrices a, c, and e to store the a, c, and e path coefficients
                            mxMatrix(type="Stand", nrow=nphen2, ncol=nphen2,
@@ -581,8 +581,8 @@ gnome_mx_simulation <- function(
                                                means ="expMean", varnames),
                            mxFitFunctionML()
       )
-      # Model_4 <-  mxModel(name="DZ1SAT", DZModel)
-      Model_4 <-  mxModel(DZModel)
+      # Model_4 <-  OpenMx::mxModel(name="DZ1SAT", DZModel)
+      Model_4 <-  OpenMx::mxModel(DZModel)
       # fit the model
       Model_4out <- mxRun(Model_4)
 

@@ -18,7 +18,7 @@ gnome_gee_simulation(
   x = default_x,
   nloci = 100,
   npgsloci = c(2, 5, 10, 15),
-  cmethod = "independence"
+  cmethod = "exchangeable"
 )
 }
 \arguments{
