@@ -48,7 +48,7 @@ We recognize that the path coefficients are difficult to interpret. To solve thi
 
 It is possible to look at results for present but unmodelled assortative mating by specifying the genotypic correlation between the parents. We are working on a version that estimates direct assortative mating when fitting the model.
 
-```{r}
+```{r warning=FALSE, message=FALSE}
 gnome_mx_simulation(ct = .01, si = .025, npgsloci = 10, assortm = .26)
 ```
 
