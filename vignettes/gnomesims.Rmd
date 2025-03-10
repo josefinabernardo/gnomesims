@@ -66,5 +66,5 @@ gnome_power_data
 It is possible to look at results for present but unmodelled assortative mating by specifying the genotypic correlation between the parents. We are working on a version that estimates direct assortative mating when fitting the model.
 
 ```{r}
-gnome_gee_simulation(ct = .01, si = .025, npgsloci = 10, assortm = .26)
+gnome_mx_simulation(ct = .01, si = .025, npgsloci = 10, assortm = .26)
 ```
