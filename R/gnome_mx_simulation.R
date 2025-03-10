@@ -430,23 +430,23 @@ gnome_mx_simulation <- function(
       #
       #
       # fit the model
-      Model_1out <- mxRun(Model_1, intervals=FALSE)
+      Model_1out <- mxRun(Model_1, intervals=FALSE, silent = TRUE)
       #
-      summary(Model_1out)
+      #summary(Model_1out)
       sat_1out <- mxRefModels(Model_1out, run=TRUE)
       mxCompare(sat_1out, Model_1out)
       #
       #
       Model_1b <- omxSetParameters(Model_1out, labels=c('b1'), free=FALSE, values=c(0))
-      Model_1b_out <- mxRun(Model_1b, intervals=TRUE)
+      Model_1b_out <- mxRun(Model_1b, intervals=TRUE, silent = TRUE)
       mxCompare(Model_1out, Model_1b_out)
 
       Model_1g <- omxSetParameters(Model_1out, labels=c('g1'), free=FALSE, values=c(0))
-      Model_1g_out <- mxRun(Model_1g, intervals=TRUE)
+      Model_1g_out <- mxRun(Model_1g, intervals=TRUE, silent = TRUE)
       mxCompare(Model_1out, Model_1g_out)
 
       Model_1bg <- omxSetParameters(Model_1out, labels=c('g1','b1'), free=FALSE, values=c(0))
-      Model_1bg_out <- mxRun(Model_1bg, intervals=TRUE)
+      Model_1bg_out <- mxRun(Model_1bg, intervals=TRUE, silent = TRUE)
       mxCompare(Model_1out, Model_1bg_out)
       #
       mxRefModels(Model_1out, run=TRUE) -> sat_1out
@@ -584,16 +584,16 @@ gnome_mx_simulation <- function(
       # Model_4 <-  OpenMx::mxModel(name="DZ1SAT", DZModel)
       Model_4 <-  OpenMx::mxModel(DZModel)
       # fit the model
-      Model_4out <- mxRun(Model_4)
+      Model_4out <- mxRun(Model_4, silent = TRUE)
 
       Model_4g <- omxSetParameters(Model_4out, labels='bpgsg', values=0, free=FALSE)
-      Model_4g_out = mxRun(Model_4g)
+      Model_4g_out = mxRun(Model_4g, silent = TRUE)
       #
       Model_4b=omxSetParameters(Model_4out, labels='bpgsb', values=0, free=FALSE)
-      Model_4b_out <- mxRun(Model_4b)
+      Model_4b_out <- mxRun(Model_4b, silent = TRUE)
       # "bpgsb","bpgsg"
       Model_4bg <- omxSetParameters(Model_4out, labels=c('bpgsb','bpgsg'), free=FALSE, values=c(0))
-      Model_4bg_out <- mxRun(Model_4bg)
+      Model_4bg_out <- mxRun(Model_4bg, silent = TRUE)
 
       # Power
       ncp_tmp <- c(
