@@ -18,7 +18,6 @@ default_assortm <- 0
 #' Function to run OpenMx models estimating cultural transmission and sibling interaction on simulated data
 #'
 #' @import OpenMx
-#' @importFrom OpenMx imxReportProgress
 #' @importFrom MASS mvrnorm
 #' @importFrom dplyr mutate distinct
 #' @importFrom stats D cor var
@@ -60,6 +59,9 @@ gnome_mx_simulation <- function(
     npgsloci = c(2, 5, 10, 15), # Number of loci comprising the PGS
     assortm = default_assortm # Assortative mating - genetic correlation
 ){
+  # Set option OpenMx
+  mxOption(model = NULL, key = "Default optimizer", "CSOLNP", reset = FALSE)
+
   # Logical for assortative mating
   assortm_logical = all(assortm == 0)
 
