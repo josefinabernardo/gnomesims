@@ -18,6 +18,7 @@ default_assortm <- 0
 #' Function to run OpenMx models estimating cultural transmission and sibling interaction on simulated data
 #'
 #' @import OpenMx
+#' @importFrom OpenMx imxReportProgress
 #' @importFrom MASS mvrnorm
 #' @importFrom dplyr mutate distinct
 #' @importFrom stats D cor var

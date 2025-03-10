@@ -40,7 +40,6 @@ The core function of `gnomesims` is the `gnome_mx_simulation()` function. It tak
 gnome_mx_simulation(ct = .01, si = .025, npgsloci = 10)
 ```
 
-
 Embedded within the simulation is the function `gnome_power()` to calculate power from alpha, degrees of freedom and the non-centrality parameter.
 
 We recognize that the path coefficients are difficult to interpret. To solve this issue, the function `gnome_effect()` calculates a readily interpretable effect size measure.
@@ -60,4 +59,12 @@ To demonstrate what type of data this package can generate, we have included two
 
 ```{r}
 gnome_power_data
+```
+
+## Assortative mating
+
+It is possible to look at results for present but unmodelled assortative mating by specifying the genotypic correlation between the parents. We are working on a version that estimates direct assortative mating when fitting the model.
+
+```{r}
+gnome_gee_simulation(ct = .01, si = .025, npgsloci = 10, assortm = .26)
 ```
