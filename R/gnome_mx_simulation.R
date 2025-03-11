@@ -60,7 +60,7 @@ gnome_mx_simulation <- function(
     assortm = default_assortm # Assortative mating - genetic correlation
 ){
   # Set option OpenMx
-  mxOption(model = NULL, key = "Default optimizer", "CSOLNP", reset = FALSE)
+  mxOption(model = NULL, key = "Default optimizer", "SLSQP", reset = FALSE)
 
   # Logical for assortative mating
   assortm_logical = all(assortm == 0)
