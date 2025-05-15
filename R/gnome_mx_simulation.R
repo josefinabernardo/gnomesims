@@ -59,12 +59,6 @@ gnome_mx_simulation <- function(
     npgsloci = c(2, 5, 10, 15), # Number of loci comprising the PGS
     assortm = default_assortm # Assortative mating - genetic correlation
 ){
-  gc()
-  # Set option OpenMx
-  mxOption(model = NULL, key = "Default optimizer", "CSOLNP")
-  # mxOption(model = NULL, key = "Default optimizer", "SLSQP")
-  mxOption(NULL, "Number of Threads", parallel::detectCores())
-
   # Logical for assortative mating
   assortm_logical = all(assortm == 0)
 
