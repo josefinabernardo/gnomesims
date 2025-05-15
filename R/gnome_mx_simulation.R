@@ -61,7 +61,7 @@ gnome_mx_simulation <- function(
 ){
   gc()
   # Set option OpenMx
-  # mxOption(model = NULL, key = "Default optimizer", "CSOLNP")
+  mxOption(model = NULL, key = "Default optimizer", "CSOLNP")
   # mxOption(model = NULL, key = "Default optimizer", "SLSQP")
   mxOption(NULL, "Number of Threads", parallel::detectCores())
 
