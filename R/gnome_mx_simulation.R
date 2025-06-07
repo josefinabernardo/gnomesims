@@ -59,6 +59,7 @@ gnome_mx_simulation <- function(
     npgsloci = c(2, 5, 10, 15), # Number of loci comprising the PGS
     assortm = default_assortm # Assortative mating - genetic correlation
 ){
+
   gc()
   # Set option OpenMx
   OpenMx::mxOption(model = NULL, key = "Default optimizer", "NPSOL")
