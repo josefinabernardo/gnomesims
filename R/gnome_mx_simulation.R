@@ -61,10 +61,10 @@ gnome_mx_simulation <- function(
 ){
   gc()
   # Set option OpenMx
-  mxOption(model = NULL, key = "Default optimizer", "NPSOL")
+  OpenMx::mxOption(model = NULL, key = "Default optimizer", "NPSOL")
   # mxOption(model = NULL, key = "Default optimizer", "CSOLNP")
   # mxOption(model = NULL, key = "Default optimizer", "SLSQP")
-  mxOption(NULL, "Number of Threads", parallel::detectCores())
+  OpenMx::mxOption(NULL, "Number of Threads", parallel::detectCores())
 
   # Logical for assortative mating
   assortm_logical = all(assortm == 0)
