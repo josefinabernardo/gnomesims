@@ -20,7 +20,7 @@
 gnome_effect <- function(a, c, e, g, b, varA = 1, varC = 1, varE = 1) {
 
   # Phenotypic covariances for MZ and DZ
-  smz = 2 * (g + a/2 + b/2)**2*varA + (a*varA/2 + b*varA/2) * a + (a*varA/2 + b*varA/2) * b + c**2*varC + e**2
+  smz = 2 * (g + a/2 + b/2)**2*varA + (a*varA/2 + b*varA/2) * a + (a*varA/2 + b*varA/2) * b + c**2*varC + e**2*varE
   sdz = 2 * (g + a/2 + b/2)**2*varA + a**2*varA/2 + b**2*varA/2 + c**2*varC + e**2*varE
 
   # Variance Increase
