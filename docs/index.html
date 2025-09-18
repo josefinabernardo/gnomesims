@@ -6,12 +6,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Power Calculations for Genotyped Family Data • gnomesims</title>
-<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="apple-touch-icon.png">
-<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="apple-touch-icon-120x120.png">
-<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="apple-touch-icon-76x76.png">
-<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="apple-touch-icon-60x60.png">
+<!-- favicons --><link rel="icon" type="image/png" sizes="48x48" href="favicon-48x48.png">
+<link rel="icon" type="”image/svg+xml”" href="favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="icon" sizes="any" href="favicon.ico">
+<link rel="manifest" href="site.webmanifest">
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
@@ -65,16 +64,15 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-
 <div class="section level1">
 <div class="page-header"><h1 id="gnomesims">gnomesims<a class="anchor" aria-label="anchor" href="#gnomesims"></a>
 </h1></div>
-<table class="table"><tr>
-<td>
+<p align="center">
+<img src="reference/figures/logo.png" alt="Logo" width="200"></p>
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p><code>gnomesims</code> (pronounced ‘genome sims’) is an R package to perform genomic simulations with a focus on including gene-environment correlation. The package enables researchers to perform power analyses for studies using family-based designs that incorporate polygenic scores. It accompanies a paper on a simulation study titled ‘A simulation study on detecting cultural transmission and sibling interaction using polygenic scores’. The pre-print is available here: <a href="https://www.researchsquare.com/article/rs-5461256/v1" class="external-link uri">https://www.researchsquare.com/article/rs-5461256/v1</a>.</p>
+<p><code>gnomesims</code> (pronounced ‘genome sims’) is an R package to perform genomic simulations on models of gene-environment correlation. It contains wrapper functions for <code>OpenMx</code> and GEE models and example data which allow researchers to perform power analyses for studies using family-based designs that incorporate polygenic scores. It accompanies our paper ‘A simulation study on detecting cultural transmission and sibling interaction using polygenic scores’ which is currently under review. The pre-print is available here: <a href="#id_0" class="uri">https://www.researchsquare.com/article/rs-5461256/v1</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -89,13 +87,20 @@
 </h2>
 <p>For detailed documentation please refer to the vignette: <a href="https://josefinabernardo.github.io/gnomesims/articles/gnomesims.html" class="external-link">How to use gnomesims</a>.</p>
 </div>
-</td>
-<td>
-<img src="reference/figures/logo.png" alt="Gnomesims Logo">
-</td>
-</tr></table>
+<div class="section level2">
+<h2 id="abstract">Abstract<a class="anchor" aria-label="anchor" href="#abstract"></a>
+</h2>
+<p>In the classical twin design, the assumption that the additive genetic (A) and shared environment (C) variance components are uncorrelated may not hold. If there is positive AC covariance, the C component is overestimated. While many processes can lead to AC covariance, in this study, we focus on two widely-studied mechanism: Cultural transmission (e.g., genetic nurture), when the parents’ genotype contributes to the effective environment of the child, and sibling interaction, when the genotype of one sibling contributes to the effective environment of another. Several designs use polygenic scores of parents or siblings to detect AC covariance, but these models cannot unambiguously identify the source. A combined model has been proposed, but its power to identify both processes has not been well-studied yet. This study uses simulated data from genotyped twins and their parents to investigate the power to disentangle these processes. Results demonstrated that we can detect AC covariance using either genotyped-sibling or genotyped-parent data, but we cannot resolve its source and risk making wrong inferences. However, these sources of AC covariance can be resolved using genotyped data of both siblings and parents. We implement these findings in an R package for genomic simulations, <em>gnomesims</em>, and emphasize the need for whole-family genotyping and modeling.</p>
+<p><em>Keywords:</em> AC covariance, classical twin design, gene-environment interplay, polygenic scores, statistical power</p>
 </div>
-
+<div class="section level2">
+<h2 id="the-model">The Model<a class="anchor" aria-label="anchor" href="#the-model"></a>
+</h2>
+<p align="center">
+<img src="reference/figures/PathDiagram.jpg" alt="PathDiagram" width="500"></p>
+<p><strong>Path Diagram of the Data-generating Model.</strong> This figure shows the path diagram that serves as the basis for the exact data simulation. In the model which is later applied to the data the additive genetic components are estimated using PGSs, which only account for a proportion of A. A<sub>M</sub> – additive genetic component mother, A<sub>F</sub> – additive genetic component father, A<sub>T1</sub> – additive genetic component twin 1, A<sub>T2</sub> – additive genetic component twin 2,  ζ<sub>AT1</sub> – Mendelian segregation variance A<sub>T1</sub>, ζ<sub>AT2</sub> – Mendelian segregation variance A<sub>T2</sub>, C – shared environment component, Ph<sub>T1</sub> – phenotype twin 1, Ph<sub>T2</sub> – phenotype twin 2, E<sub>T1</sub> – unshared environment component twin 1, E<sub>T2</sub> – unshared environment component twin 2, a – path coefficient additive genetic component, c – path coefficient shared environment component, e – path coefficient unique environment component, g – path coefficient cultural transmission, b – path coefficient sibling interaction. The label on the dashed arrow between the Mendelian segregation variances denotes the MZ and DZ covariances.</p>
+</div>
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -118,7 +123,7 @@
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Josefina Bernardo <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0009-0007-1894-9790" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Josefina Bernardo <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0009-0007-1894-9790" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
 </ul>
 </div>
 
@@ -135,7 +140,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
       </footer>

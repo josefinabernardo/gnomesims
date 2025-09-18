@@ -44,14 +44,6 @@ Embedded within the simulation is the function `gnome_power()` to calculate powe
 
 We recognize that the path coefficients are difficult to interpret. To solve this issue, the function `gnome_effect()` calculates a readily interpretable effect size measure.
 
-### Assortative mating
-
-It is possible to look at results for present but unmodelled assortative mating by specifying the genotypic correlation between the parents. We are working on a version that estimates direct assortative mating when fitting the model.
-
-```{r warning=FALSE, message=FALSE}
-gnome_mx_simulation(ct = .01, si = .025, npgsloci = 10, assortm = .26)
-```
-
 ## Running a simulation using generalized estimating equations
 
 The package can also simulate results using generalized estimating equations (gee) with the `gnome_gee_simulation()` function. Functionality and results are similar to those of the `gnome_mx_simulation()` function.
@@ -60,11 +52,18 @@ The package can also simulate results using generalized estimating equations (ge
 gnome_gee_simulation(ct = .01, si = .025, npgsloci = 10)
 ```
 
-
 ## In-built data sets
 
 To demonstrate what type of data this package can generate, we have included two in-built data sets. They contain the results of the `gnome_mx_simulation()` function for 3 x 3 = 9 combination of AC covariance input parameters. The data set `gnome_power_data` contains the power results and the data set `gnome_params_data` contains parameter estimates.
 
 ```{r}
 gnome_power_data
+```
+
+### Assortative mating
+
+It is possible to look at results for present but unmodelled assortative mating by specifying the genotypic correlation between the parents. We are working on a version that estimates direct assortative mating when fitting the model.
+
+```{r warning=FALSE, message=FALSE}
+gnome_mx_simulation(ct = .01, si = .025, npgsloci = 10, assortm = .26)
 ```
