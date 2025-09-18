@@ -126,30 +126,6 @@ freedom and the non-centrality parameter.</p>
 <p>We recognize that the path coefficients are difficult to interpret.
 To solve this issue, the function <code><a href="../reference/gnome_effect.html">gnome_effect()</a></code> calculates
 a readily interpretable effect size measure.</p>
-<div class="section level3">
-<h3 id="assortative-mating">Assortative mating<a class="anchor" aria-label="anchor" href="#assortative-mating"></a>
-</h3>
-<p>It is possible to look at results for present but unmodelled
-assortative mating by specifying the genotypic correlation between the
-parents. We are working on a version that estimates direct assortative
-mating when fitting the model.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/gnome_mx_simulation.html">gnome_mx_simulation</a></span><span class="op">(</span>ct <span class="op">=</span> <span class="fl">.01</span>, si <span class="op">=</span> <span class="fl">.025</span>, npgsloci <span class="op">=</span> <span class="fl">10</span>, assortm <span class="op">=</span> <span class="fl">.26</span><span class="op">)</span></span>
-<span><span class="co">## [1] "Running simulation proportion of genetic variance explained by the PGS is: 0.1 ."</span></span>
-<span><span class="co">## [1] "The factorial design has 1 setting(s)."</span></span>
-<span><span class="co">## [1] 1</span></span>
-<span><span class="co">## $power</span></span>
-<span><span class="co">##    nmz  ndz         a         c         e    g     b x PGS   A assortm    p1</span></span>
-<span><span class="co">## 1 4000 4000 0.6324555 0.5477226 0.5477226 0.01 0.025 0 0.1 0.9    0.26 0.141</span></span>
-<span><span class="co">##      p2   p3    p4    p5    p6    p7    p8        Smz       Sdz</span></span>
-<span><span class="co">## 1 0.189 0.06 0.106 0.132 0.157 0.054 0.078 0.04559689 0.0297855</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## $params</span></span>
-<span><span class="co">##    nmz  ndz         a         c         e    g     b x PGS   A assortm    e1</span></span>
-<span><span class="co">## 1 4000 4000 0.6324555 0.5477226 0.5477226 0.01 0.025 0 0.1 0.9    0.26 0.024</span></span>
-<span><span class="co">##      e2   e3    e4    e5    e6   e7    e8        Smz       Sdz</span></span>
-<span><span class="co">## 1 0.031 0.01 0.025 0.029 0.032 0.01 0.025 0.04559689 0.0297855</span></span></code></pre></div>
-</div>
 </div>
 <div class="section level2">
 <h2 id="running-a-simulation-using-generalized-estimating-equations">Running a simulation using generalized estimating equations<a class="anchor" aria-label="anchor" href="#running-a-simulation-using-generalized-estimating-equations"></a>
@@ -158,16 +134,16 @@ mating when fitting the model.</p>
 equations (gee) with the <code><a href="../reference/gnome_gee_simulation.html">gnome_gee_simulation()</a></code> function.
 Functionality and results are similar to those of the
 <code><a href="../reference/gnome_mx_simulation.html">gnome_mx_simulation()</a></code> function.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/gnome_gee_simulation.html">gnome_gee_simulation</a></span><span class="op">(</span>ct <span class="op">=</span> <span class="fl">.01</span>, si <span class="op">=</span> <span class="fl">.025</span>, npgsloci <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="co">## [1] "Running simulation proportion of genetic variance explained by the PGS is: 0.1 ."</span></span>
 <span><span class="co">## [1] "The factorial design has 1 setting(s)."</span></span>
 <span><span class="co">## [1] 1</span></span>
 <span><span class="co">## $power</span></span>
-<span><span class="co">##    nmz  ndz         a         c         e    g     b x PGS   A   p1    p2   p3</span></span>
-<span><span class="co">## 1 4000 4000 0.6324555 0.5477226 0.5477226 0.01 0.025 0 0.1 0.9 0.14 0.183 0.06</span></span>
-<span><span class="co">##      p4    p5    p6    p7   p8        Smz       Sdz</span></span>
-<span><span class="co">## 1 0.109 0.122 0.151 0.054 0.08 0.04559689 0.0297855</span></span>
+<span><span class="co">##    nmz  ndz         a         c         e    g     b x PGS   A    p1    p2   p3</span></span>
+<span><span class="co">## 1 4000 4000 0.6324555 0.5477226 0.5477226 0.01 0.025 0 0.1 0.9 0.139 0.181 0.06</span></span>
+<span><span class="co">##     p4   p5   p6    p7   p8        Smz       Sdz</span></span>
+<span><span class="co">## 1 0.11 0.12 0.15 0.054 0.08 0.04559689 0.0297855</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $params</span></span>
 <span><span class="co">##    nmz  ndz         a         c         e    g     b x PGS   A    e1    e2   e3</span></span>
@@ -184,7 +160,7 @@ included two in-built data sets. They contain the results of the
 AC covariance input parameters. The data set
 <code>gnome_power_data</code> contains the power results and the data
 set <code>gnome_params_data</code> contains parameter estimates.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">gnome_power_data</span></span>
 <span><span class="co">##    nmz  ndz    a    c    e   CT   SI x PGS   A CT(m1) MZDZ SI(m2) MZDZ</span></span>
 <span><span class="co">## 1 4000 4000 0.63 0.55 0.55 0.00 0.00 0 0.1 0.9       0.050       0.050</span></span>
@@ -206,6 +182,30 @@ set <code>gnome_params_data</code> contains parameter estimates.</p>
 <span><span class="co">## 7       0.050       0.800     0.550     0.819     0.050     0.506 13.65%  7.32%</span></span>
 <span><span class="co">## 8       0.270       0.783     0.915     0.962     0.140     0.480 21.47% 15.15%</span></span>
 <span><span class="co">## 9       0.734       0.763     0.994     0.995     0.384     0.454 30.30% 23.97%</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="assortative-mating">Assortative mating<a class="anchor" aria-label="anchor" href="#assortative-mating"></a>
+</h3>
+<p>It is possible to look at results for present but unmodelled
+assortative mating by specifying the genotypic correlation between the
+parents. We are working on a version that estimates direct assortative
+mating when fitting the model.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/gnome_mx_simulation.html">gnome_mx_simulation</a></span><span class="op">(</span>ct <span class="op">=</span> <span class="fl">.01</span>, si <span class="op">=</span> <span class="fl">.025</span>, npgsloci <span class="op">=</span> <span class="fl">10</span>, assortm <span class="op">=</span> <span class="fl">.26</span><span class="op">)</span></span>
+<span><span class="co">## [1] "Running simulation proportion of genetic variance explained by the PGS is: 0.1 ."</span></span>
+<span><span class="co">## [1] "The factorial design has 1 setting(s)."</span></span>
+<span><span class="co">## [1] 1</span></span>
+<span><span class="co">## $power</span></span>
+<span><span class="co">##    nmz  ndz         a         c         e    g     b x PGS   A assortm    p1</span></span>
+<span><span class="co">## 1 4000 4000 0.6324555 0.5477226 0.5477226 0.01 0.025 0 0.1 0.9    0.26 0.141</span></span>
+<span><span class="co">##      p2   p3    p4    p5    p6    p7    p8        Smz       Sdz</span></span>
+<span><span class="co">## 1 0.189 0.06 0.106 0.132 0.157 0.054 0.078 0.04559689 0.0297855</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## $params</span></span>
+<span><span class="co">##    nmz  ndz         a         c         e    g     b x PGS   A assortm    e1</span></span>
+<span><span class="co">## 1 4000 4000 0.6324555 0.5477226 0.5477226 0.01 0.025 0 0.1 0.9    0.26 0.024</span></span>
+<span><span class="co">##      e2   e3    e4    e5    e6   e7    e8        Smz       Sdz</span></span>
+<span><span class="co">## 1 0.031 0.01 0.025 0.029 0.032 0.01 0.025 0.04559689 0.0297855</span></span></code></pre></div>
+</div>
 </div>
   </div>
 
