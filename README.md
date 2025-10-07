@@ -30,8 +30,9 @@ In the classical twin design, the assumption that the additive genetic (A) and s
 ## The Model
 
 <p align = "center">
-  <img src = "man/figures/PathDiagram.jpg" alt = "PathDiagram" width = "500"/>
+  <img src = "man/figures/PathDiagramSeptember.jpg" alt = "PathDiagram" width = "700"/>
 </p>
 
 
-**Path Diagram of the Data-generating Model.** This figure shows the path diagram that serves as the basis for the exact data simulation. In the model which is later applied to the data the additive genetic components are estimated using PGSs, which only account for a proportion of A. A~M~ – additive genetic component mother, A~F~ – additive genetic component father, A~T1~ – additive genetic component twin 1, A~T2~ – additive genetic component twin 2,  ζ~AT1~ – Mendelian segregation variance A~T1~, ζ~AT2~ – Mendelian segregation variance A~T2~, C – shared environment component, Ph~T1~ – phenotype twin 1, Ph~T2~ – phenotype twin 2, E~T1~ – unshared environment component twin 1, E~T2~ – unshared environment component twin 2, a – path coefficient additive genetic component, c – path coefficient shared environment component, e – path coefficient unique environment component, g – path coefficient cultural transmission, b – path coefficient sibling interaction. The label on the dashed arrow between the Mendelian segregation variances denotes the MZ and DZ covariances.
+**Path Diagram of the Data-generating Model.** This figure shows the path diagram that serves as the basis for the exact data simulation. In the model which is later applied to the data the paths are estimated using PGSs, which only account for a proportion of A. a – path coefficient additive genetic component, c – path coefficient shared environment component, e – path coefficient unique environment component, g – path coefficient cultural transmission, b – path coefficient sibling interaction. The label on the dashed arrow between the Mendelian segregation (recombinaton) variances denotes the MZ and DZ covariances.
+
