@@ -6,7 +6,7 @@
 
 ## Overview
 
-`gnomesims` (pronounced 'genome sims') is an R package to perform genomic simulations on models of gene-environment correlation. It contains wrapper functions for `OpenMx` and GEE models and example data which allow researchers to perform power analyses for studies using family-based designs that incorporate polygenic scores. It accompanies our paper 'A simulation study on detecting cultural transmission and sibling interaction using polygenic scores' which has been published with Behavior Genetics: https://link.springer.com/article/10.1007/s10519-025-10244-y.
+`gnomesims` (pronounced 'genome sims') is an R package to perform genomic simulations on models of gene-environment correlation. It contains wrapper functions for `OpenMx` and GEE models and example data which allow researchers to perform power analyses for studies using family-based designs that incorporate polygenic scores. It accompanies our paper 'A simulation study on detecting cultural transmission and sibling interaction using polygenic scores', published in Behavior Genetics: https://link.springer.com/article/10.1007/s10519-025-10244-y.
 
 ## Installation
 
